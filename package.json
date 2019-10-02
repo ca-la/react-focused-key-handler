@@ -1,0 +1,86 @@
+{
+  "name": "@cala/react-focused-key-handler",
+  "version": "0.1.3",
+  "description": "A key-handler that uses react context to create key handlers focused around a component.",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "test": "bin/test",
+    "prepublishOnly": "bin/test && bin/build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:ca-la/react-focused-key-handler.git"
+  },
+  "author": "CALA <devops@ca.la>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ca-la/react-focused-key-handler/issues"
+  },
+  "homepage": "https://github.com/ca-la/react-focused-key-handler#readme",
+  "peerDependencies": {
+    "react": "^16.8.5",
+    "lodash": "^4.14.106"
+  },
+  "keywords": [
+    "React",
+    "TypeScript",
+    "react-focused-key-handler",
+    "key-handler",
+    "focused",
+    "context-key-handler"
+  ],
+  "devDependencies": {
+    "@testing-library/react": "^9.1.4",
+    "@types/jest": "^24.0.18",
+    "@types/react": "^16.9.2",
+    "@types/lodash": "^4.14.106",
+    "@types/sinon": "^5.0.1",
+    "sinon": "^6.0.1",
+    "@typescript-eslint/eslint-plugin": "^2.2.0",
+    "@typescript-eslint/parser": "^2.2.0",
+    "eslint": "^6.3.0",
+    "eslint-config-airbnb": "^18.0.1",
+    "eslint-config-prettier": "^6.3.0",
+    "eslint-import-resolver-typescript": "^1.1.1",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-react": "^7.14.3",
+    "eslint-plugin-react-hooks": "^2.0.1",
+    "jest": "^24.9.0",
+    "prettier": "^1.14.3",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0",
+    "ts-jest": "^24.0.2",
+    "ts-node": "^7.0.1",
+    "tslib": "^1.9.3",
+    "typescript": "^3.5.2"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "collectCoverageFrom": [
+      "**/*.{ts,tsx}",
+      "!**/node_modules/**",
+      "!**/*.d.ts"
+    ],
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testEnvironment": "jsdom",
+    "testRegex": "spec\\.(jsx?|tsx?)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json"
+    ]
+  },
+  "dependencies": {}
+}

@@ -1,0 +1,70 @@
+{
+  "extends": [
+    "airbnb",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "prettier",
+    "prettier/@typescript-eslint"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint"],
+  "parserOptions": {
+    "project": "./tsconfig.lint.json",
+    "ecmaVersion": 6,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "modules": true,
+      "jsx": true
+    }
+  },
+  "settings": {
+    "import/resolver": {
+      "node": true,
+      "eslint-import-resolver-typescript": true
+    }
+  },
+  "rules": {
+    "@typescript-eslint/camelcase": 0,
+    "@typescript-eslint/no-empty-interface": 0,
+    "@typescript-eslint/no-explicit-any": 0,
+    "@typescript-eslint/no-non-null-assertion": 0,
+    "@typescript-eslint/no-use-before-define": 0,
+    "arrow-body-style": 0,
+    "array-callback-return": 0,
+    "arrow-parens": 0,
+    "comma-dangle": [2, "never"],
+    "eqeqeq": ["error", "always"],
+    "function-paren-newline": 0,
+    "implicit-arrow-linebreak": 0,
+    "import/no-extraneous-dependencies": [2, {"devDependencies": true}],
+    "import/prefer-default-export": 0,
+    "indent": 0,
+    "jsx-a11y/mouse-events-have-key-events": 0,
+    "jsx-quotes": ["error", "prefer-single"],
+    "lines-between-class-members": 0,
+    "max-len": 0,
+    "no-await-in-loop": 0,
+    "no-confusing-arrow": 0,
+    "no-console": 2,
+    "no-nested-ternary": 0,
+    "no-restricted-syntax": [
+      "error",
+      "ForInStatement",
+      "LabeledStatement",
+      "WithStatement"
+    ],
+    "no-underscore-dangle": 0,
+    "no-unused-vars": [2, { "varsIgnorePattern": "^_.+$" }],
+    "object-curly-newline": 0,
+    "operator-linebreak": 0,
+    "react/destructuring-assignment": 0,
+    "react/jsx-fragments": ["warn", "element"],
+    "react/jsx-filename-extension": [1, { "extensions": [".tsx", ".jsx"] }],
+    "react/jsx-no-bind": 0,
+    "react/jsx-one-expression-per-line": 0,
+    "react/jsx-props-no-spreading": 0,
+    "react/prefer-stateless-function": 0,
+    "react/sort-comp": 0,
+    "symbol-description": 0
+  }
+}

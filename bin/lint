@@ -1,0 +1,37 @@
+#!/bin/bash
+
+set -o errexit
+set -o nounset
+set -o pipefail
+set -o noglob
+
+# Run linters
+# Usage: bin/lint
+
+main() {
+  files=$({ git diff --diff-filter=d --name-only master; git ls-files --other --modified --exclude-standard; } | grep -E ".[jt]sx?$" || true)
+  linter_opts=''
+
+  while getopts "af" opt; do
+    case $opt in
+      a)
+        files='src/**/*.ts?(x)'
+        ;;
+      f)
+        linter_opts='--fix'
+        ;;
+      *)
+        echo 'Usage: bin/lint [-af]'
+        echo 'Options:'
+        echo ' -a Run on all valid files, not just divergent files'
+        echo ' -f Runs the eslint autofixer'
+        exit 1
+        ;;
+    esac
+  done
+
+
+  npx eslint $files --config .eslintrc --format stylish $linter_opts
+}
+
+main "$@"
