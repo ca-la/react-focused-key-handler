@@ -23,7 +23,7 @@ shortcuts that prevent fallthrough (unless specified)
 First around the border of the app add the context provider, we do this as part of our routing
 component
 
-```ts
+```tsx
 import KeyHandlerProvider from '../components/lib/key-handler/provider';
 
 const Interactive = ({
@@ -42,23 +42,22 @@ const Interactive = ({
 Next add `<FocusGroup>` components around the component boundries at the level which you need
 them. This will prevent other groups from executing under it. Then children can add `<KeyHandler>` components without worrying about it.
 
-```ts
-<App>
-  // At the base of the app
-  <Provider />
-  // At the layer boundry for this group of key handlers
-  <FocusGroup>
-    // In the children of the group add keyhandlers as needed.
-    <KeyHandler
-      eventType={EventType.Keydown}
-      triggers={[{ key: 'Escape' }]}
-      handler={handlerStub}
-    />
-    <Modal onRequestClose={jest.fn()}>
-      <p>Nothing</p>
-    </Modal>
-  </FocusGroup>
-</App>
+```tsx
+return (
+  <App>
+    // At the base of the app
+    <Provider />
+    // At the layer boundry for this group of key handlers
+    <FocusGroup>
+      // In the children of the group add keyhandlers as needed.
+      <KeyHandler
+        eventType={EventType.Keydown}
+        triggers={[{ key: 'Escape' }]}
+        handler={handlerStub}
+      />
+    </FocusGroup>
+  </App>
+)
 ```
 
 ## Contributing
