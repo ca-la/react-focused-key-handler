@@ -32,7 +32,6 @@ main() {
 
 
   npx eslint $files --config .eslintrc --format stylish $linter_opts
-  npx cala-lint-commented-code
 }
 
 main "$@"

@@ -10,6 +10,7 @@ set -o noglob
 
 main() {
   bin/format -al
+  bin/lint -a
   bin/test
   bin/build
 }

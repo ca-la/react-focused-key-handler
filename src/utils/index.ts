@@ -10,8 +10,9 @@ function matchModifier(event: KeyboardEvent, modifier: Modifier): boolean {
       return event.ctrlKey;
     case Modifier.Alt:
       return event.altKey;
+    default:
+      return false;
   }
-  return false;
 }
 
 function countModifiers(event: KeyboardEvent): number {
