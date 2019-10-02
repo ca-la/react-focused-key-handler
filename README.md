@@ -2,6 +2,16 @@
 
 A key-handler that uses react context to create key handlers focused around a component.
 
+## Status
+
+| Branch   | URL                                              | Build Status                                                                                                                                |
+| -------- | ------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| `master` | https://www.npmjs.com/package/@cala/react-search-route | [![CircleCI](https://circleci.com/gh/ca-la/react-portal/tree/master.svg?style=svg)](https://circleci.com/gh/ca-la/react-search-route/tree/master) |
+
+## Installation
+
+`npm install @cala/react-focused-key-handler --save`
+
 ## Premise
 
 This library solves the problem of overlapping keyhandlers in the global space when writing
@@ -49,4 +59,14 @@ them. This will prevent other groups from executing under it. Then children can 
     </Modal>
   </FocusGroup>
 </App>
+```
+
+## Contributing
+
+To tag off and release a new version to npm, run the release script:
+
+```
+$ ./bin/release patch    # 0.0.x - bug fixes
+$ ./bin/release minor    # 0.x.0 - new features or changes
+$ ./bin/release major    # x.0.0 - large, backwards-incompatible changes
 ```
