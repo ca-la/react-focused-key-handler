@@ -11,6 +11,7 @@ set -o noglob
 main() {
   bin/format -al
   bin/lint -a
+  npx tsc --noEmit
   bin/test
   bin/build
 }
