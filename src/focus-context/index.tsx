@@ -8,7 +8,7 @@ export interface FocusContextValue {
 export const FocusContext = React.createContext<FocusContextValue>({});
 
 interface OwnProps {
-  children?: React.ReactNode
+  children?: React.ReactNode;
 }
 
 export class FocusGroup extends React.PureComponent<OwnProps> {
