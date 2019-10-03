@@ -18,14 +18,14 @@
   "author": "CALA <devops@ca.la>",
   "contributors": [
     {
+      "name": "Dylan Pyle",
+      "email": "me@dylanpyle.com",
+      "url": "https://github.com/dylanpyle"
+    },
+    {
       "name": "Nicholas Alekhine",
       "email": "nick.alekhine@gmail.com",
       "url": "https://github.com/alekhinen"
-    },
-    {
-      "name": "Scott Trinh",
-      "email": "scott@scotttrinh.com",
-      "url": "https://github.com/scotttrinh"
     },
     {
       "name": "Sam Swanke",
@@ -36,6 +36,11 @@
       "name": "Sebastian Coraccio",
       "email": "sebastiancoraccio@gmail.com",
       "url": "https://github.com/sebastiancoraccio"
+    },
+    {
+      "name": "Scott Trinh",
+      "email": "scott@scotttrinh.com",
+      "url": "https://github.com/scotttrinh"
     }
   ],
   "license": "MIT",
