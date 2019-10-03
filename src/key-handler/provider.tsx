@@ -2,7 +2,7 @@ import * as React from 'react';
 import { EventType } from './index';
 import FocusedHandlerStack from '../focused-stack';
 
-export default class Provider extends React.PureComponent {
+export class Provider extends React.PureComponent {
   public componentDidMount(): void {
     document.body.addEventListener(EventType.Keydown, this.handleKey);
   }

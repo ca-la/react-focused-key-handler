@@ -13,3 +13,5 @@ export {
   FocusContextConsumer,
   FocusContext
 } from './focus-context';
+
+export { Provider } from './key-handler/provider';
