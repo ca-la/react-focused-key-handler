@@ -16,6 +16,28 @@
     "url": "git@github.com:ca-la/react-focused-key-handler.git"
   },
   "author": "CALA <devops@ca.la>",
+  "contributors": [
+    {
+      "name": "Nicholas Alekhine",
+      "email": "nick.alekhine@gmail.com",
+      "url": "https://github.com/alekhinen"
+    },
+    {
+      "name": "Scott Trinh",
+      "email": "scott@scotttrinh.com",
+      "url": "https://github.com/scotttrinh"
+    },
+    {
+      "name": "Sam Swanke",
+      "email": "skswanke@gmail.com",
+      "url": "https://github.com/skswanke"
+    },
+    {
+      "name": "Sebastian Coraccio",
+      "email": "sebastiancoraccio@gmail.com",
+      "url": "https://github.com/sebastiancoraccio"
+    }
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/ca-la/react-focused-key-handler/issues"
