@@ -6,7 +6,9 @@ A key-handler that uses react context to create key handlers focused around a co
 
 | Branch   | URL                                              | Build Status                                                                                                                                |
 | -------- | ------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------- |
-| `master` | https://www.npmjs.com/package/@cala/react-focused-key-handler | [![CircleCI](https://circleci.com/gh/ca-la/react-focused-key-handler/tree/master.svg?style=svg)](https://circleci.com/gh/ca-la/react-focused-key-handler/tree/master) |
+| `master` | https://www.npmjs.com/package/@cala/react-focused-key-handler | [![Actions Status](https://github.com/ca-la/react-focused-key-handler/workflows/Node+CI/badge.svg)](https://github.com/ca-la/react-focused-key-handler/actions) |
+
+
 
 ## Installation
 
