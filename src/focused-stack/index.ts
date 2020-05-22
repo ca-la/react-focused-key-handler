@@ -1,5 +1,5 @@
-import { omit } from 'lodash';
-import { Modifier, Trigger } from '../key-handler';
+import { omit } from "lodash";
+import { Modifier, Trigger } from "../key-handler";
 
 type Handler = (event: KeyboardEvent) => void;
 
@@ -44,7 +44,7 @@ class FocusedKeyHandlerStack {
     if (e.shiftKey) {
       modifiers.push(Modifier.Shift);
     }
-    return `${key}${modifiers.join('-')}`;
+    return `${key}${modifiers.join("-")}`;
   };
 
   public fireEvent = (e: KeyboardEvent): void => {
@@ -60,7 +60,7 @@ class FocusedKeyHandlerStack {
     }
     const target = e.target as HTMLElement | null;
     const isContentEditable = target
-      ? target.nodeName === 'INPUT' || target.isContentEditable
+      ? target.nodeName === "INPUT" || target.isContentEditable
       : false;
     const isContentEditableAndShouldTrigger =
       isContentEditable && handlerObject.shouldTriggerInInputs;
@@ -76,7 +76,7 @@ class FocusedKeyHandlerStack {
   public pushGroup = (groupId: number): void => {
     this.stack.push({
       groupId,
-      handlers: {}
+      handlers: {},
     });
   };
 
@@ -96,7 +96,7 @@ class FocusedKeyHandlerStack {
     found.handlers[key] = {
       handler,
       key,
-      shouldTriggerInInputs: trigger.shouldTriggerInInputs
+      shouldTriggerInInputs: trigger.shouldTriggerInInputs,
     };
   };
 
@@ -119,7 +119,7 @@ class FocusedKeyHandlerStack {
 
   private getKey = (trigger: Trigger): string => {
     return `${trigger.key}${
-      trigger.modifiers ? trigger.modifiers.sort().join('-') : ''
+      trigger.modifiers ? trigger.modifiers.sort().join("-") : ""
     }`;
   };
 }

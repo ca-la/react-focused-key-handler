@@ -1,12 +1,12 @@
-import * as React from 'react';
+import * as React from "react";
 import {
   createMatchingKeyHandler,
   EventType,
   KeyHandlerProps as OwnProps,
-  Trigger
-} from './index';
-import FocusedHandlerStack from '../focused-stack';
-import { FocusContext } from '../focus-context';
+  Trigger,
+} from "./index";
+import FocusedHandlerStack from "../focused-stack";
+import { FocusContext } from "../focus-context";
 
 export default class KeyHandler extends React.Component<OwnProps> {
   private eventType: EventType;

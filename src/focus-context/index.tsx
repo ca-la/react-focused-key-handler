@@ -1,5 +1,5 @@
-import * as React from 'react';
-import FocusedHandlerStack from '../focused-stack';
+import * as React from "react";
+import FocusedHandlerStack from "../focused-stack";
 
 export interface FocusContextValue {
   focusGroupId?: number;
