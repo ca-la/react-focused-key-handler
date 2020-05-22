@@ -32,7 +32,7 @@
     "arrow-body-style": 0,
     "array-callback-return": 0,
     "arrow-parens": 0,
-    "comma-dangle": [2, "never"],
+    "comma-dangle": 0,
     "eqeqeq": ["error", "always"],
     "function-paren-newline": 0,
     "implicit-arrow-linebreak": 0,

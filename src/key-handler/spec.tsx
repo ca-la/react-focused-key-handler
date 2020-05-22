@@ -1,18 +1,18 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import * as TestUtils from 'react-dom/test-utils';
+import * as React from "react";
+import * as ReactDOM from "react-dom";
+import * as TestUtils from "react-dom/test-utils";
 
-import KeyHandler from './index';
+import KeyHandler from "./index";
 
-describe('<KeyHandler />', () => {
+describe("<KeyHandler />", () => {
   let container: HTMLDivElement | null = null;
   let handlerSpy: jest.Mock;
 
   beforeEach(() => {
-    container = document.createElement('div');
+    container = document.createElement("div");
 
     if (!container) {
-      throw new Error('Could not create container element for DOM testing');
+      throw new Error("Could not create container element for DOM testing");
     }
 
     handlerSpy = jest.fn();
@@ -28,44 +28,44 @@ describe('<KeyHandler />', () => {
     container = null;
   });
 
-  describe('when attaching to the body', () => {
+  describe("when attaching to the body", () => {
     beforeEach(() => {
       TestUtils.act(() => {
         ReactDOM.render(
-          <KeyHandler triggers={[{ key: 'KeyA' }]} handler={handlerSpy} />,
+          <KeyHandler triggers={[{ key: "KeyA" }]} handler={handlerSpy} />,
           container
         );
       });
     });
 
-    describe('when the matching key is triggered on the body', () => {
+    describe("when the matching key is triggered on the body", () => {
       beforeEach(() => {
         TestUtils.act(() => {
           document.body.dispatchEvent(
-            new KeyboardEvent('keydown', { code: 'KeyA' })
+            new KeyboardEvent("keydown", { code: "KeyA" })
           );
         });
       });
 
-      it('triggers the spy', () => {
+      it("triggers the spy", () => {
         expect(handlerSpy).toHaveBeenCalledTimes(1);
       });
     });
 
-    describe('when the matching key is triggered on the container', () => {
+    describe("when the matching key is triggered on the container", () => {
       beforeEach(() => {
         TestUtils.act(() => {
           if (!container) {
-            throw new Error('Could not find the container element');
+            throw new Error("Could not find the container element");
           }
 
           container.dispatchEvent(
-            new KeyboardEvent('keydown', { code: 'KeyA' })
+            new KeyboardEvent("keydown", { code: "KeyA" })
           );
         });
       });
 
-      it('does not trigger the spy', () => {
+      it("does not trigger the spy", () => {
         expect(handlerSpy).toHaveBeenCalledTimes(0);
       });
     });

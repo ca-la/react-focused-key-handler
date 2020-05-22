@@ -1,6 +1,6 @@
-import * as React from 'react';
-import { EventType } from './index';
-import FocusedHandlerStack from '../focused-stack';
+import * as React from "react";
+import { EventType } from "./index";
+import FocusedHandlerStack from "../focused-stack";
 
 export class Provider extends React.PureComponent {
   public componentDidMount(): void {

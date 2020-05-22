@@ -1,15 +1,15 @@
-import { matchTrigger } from '../utils';
+import { matchTrigger } from "../utils";
 
 export enum EventType {
-  Keydown = 'keydown',
-  Keyup = 'keyup'
+  Keydown = "keydown",
+  Keyup = "keyup",
 }
 
 export enum Modifier {
-  Meta = 'Meta',
-  Shift = 'Shift',
-  Control = 'Control',
-  Alt = 'Alt'
+  Meta = "Meta",
+  Shift = "Shift",
+  Control = "Control",
+  Alt = "Alt",
 }
 
 export interface Trigger {
@@ -41,4 +41,4 @@ export function createMatchingKeyHandler(
   };
 }
 
-export { default } from './body';
+export { default } from "./body";

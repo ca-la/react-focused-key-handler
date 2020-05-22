@@ -1,4 +1,4 @@
-import { Modifier, Trigger } from '../key-handler';
+import { Modifier, Trigger } from "../key-handler";
 
 function matchModifier(event: KeyboardEvent, modifier: Modifier): boolean {
   switch (modifier) {
@@ -27,7 +27,7 @@ function countModifiers(event: KeyboardEvent): number {
 export function matchTrigger(event: KeyboardEvent, trigger: Trigger): boolean {
   const target = event.target as HTMLElement | null;
   const isContentEditable = target
-    ? target.nodeName === 'INPUT' || target.isContentEditable
+    ? target.nodeName === "INPUT" || target.isContentEditable
     : false;
 
   if (isContentEditable && !trigger.shouldTriggerInInputs) {
