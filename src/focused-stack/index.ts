@@ -1,4 +1,3 @@
-import { omit } from "lodash";
 import { Modifier, Trigger } from "../key-handler";
 
 type Handler = (event: KeyboardEvent) => void;
@@ -11,7 +10,7 @@ interface HandlerObject {
 
 interface HandlerGroup {
   groupId: number;
-  handlers: { [key: string]: HandlerObject };
+  handlers: { [key: string]: HandlerObject[] };
 }
 
 class FocusedKeyHandlerStack {
@@ -54,22 +53,25 @@ class FocusedKeyHandlerStack {
     const key = this.getKeyCodeFromEvent(e);
 
     const handlerGroup = this.stack[this.stack.length - 1];
-    const handlerObject = handlerGroup.handlers[key];
-    if (!handlerObject) {
+    const handlerObjects = handlerGroup.handlers[key];
+    if (!handlerObjects) {
       return;
     }
     const target = e.target as HTMLElement | null;
     const isContentEditable = target
       ? target.nodeName === "INPUT" || target.isContentEditable
       : false;
-    const isContentEditableAndShouldTrigger =
-      isContentEditable && handlerObject.shouldTriggerInInputs;
 
-    if (
-      handlerObject &&
-      (!isContentEditable || isContentEditableAndShouldTrigger)
-    ) {
-      handlerObject.handler(e);
+    for (const handlerObject of handlerObjects) {
+      const isContentEditableAndShouldTrigger =
+        isContentEditable && handlerObject.shouldTriggerInInputs;
+
+      if (
+        handlerObject &&
+        (!isContentEditable || isContentEditableAndShouldTrigger)
+      ) {
+        handlerObject.handler(e);
+      }
     }
   };
 
@@ -93,19 +95,34 @@ class FocusedKeyHandlerStack {
       return;
     }
 
-    found.handlers[key] = {
-      handler,
-      key,
-      shouldTriggerInInputs: trigger.shouldTriggerInInputs,
-    };
+    const existingHandlers = found.handlers[key] || [];
+
+    found.handlers[key] = [
+      ...existingHandlers,
+      {
+        handler,
+        key,
+        shouldTriggerInInputs: trigger.shouldTriggerInInputs,
+      },
+    ];
   };
 
-  public removeAtIdAndTrigger = (groupId: number, trigger: Trigger): void => {
+  public removeAtIdAndTrigger = (
+    groupId: number,
+    trigger: Trigger,
+    handler: Handler
+  ): void => {
     const handlerKey = this.getKey(trigger);
     this.stack = this.stack.map((group: HandlerGroup) => {
       if (group.groupId === groupId) {
         // eslint-disable-next-line no-param-reassign
-        group.handlers = omit(group.handlers, handlerKey);
+        const handlersAtKey = group.handlers[handlerKey] || [];
+        group.handlers = {
+          ...group.handlers,
+          [handlerKey]: handlersAtKey.filter(
+            (handlerObject: HandlerObject) => handlerObject.handler !== handler
+          ),
+        };
       }
       return group;
     });
