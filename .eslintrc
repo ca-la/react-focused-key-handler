@@ -3,8 +3,7 @@
     "airbnb",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
-    "prettier",
-    "prettier/@typescript-eslint"
+    "prettier"
   ],
   "parser": "@typescript-eslint/parser",
   "plugins": ["@typescript-eslint"],
@@ -25,10 +24,13 @@
   },
   "rules": {
     "@typescript-eslint/camelcase": 0,
+    "@typescript-eslint/explicit-module-boundary-types": 0,
     "@typescript-eslint/no-empty-interface": 0,
     "@typescript-eslint/no-explicit-any": 0,
     "@typescript-eslint/no-non-null-assertion": 0,
-    "@typescript-eslint/no-use-before-define": 0,
+    "@typescript-eslint/no-shadow": 2,
+    "@typescript-eslint/no-use-before-define": 2,
+    "@typescript-eslint/no-unused-vars": 2,
     "arrow-body-style": 0,
     "array-callback-return": 0,
     "arrow-parens": 0,
@@ -38,6 +40,14 @@
     "implicit-arrow-linebreak": 0,
     "import/no-extraneous-dependencies": [2, {"devDependencies": true}],
     "import/prefer-default-export": 0,
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "ts": "never",
+        "tsx": "never"
+      }
+    ],
     "indent": 0,
     "jsx-a11y/mouse-events-have-key-events": 0,
     "jsx-quotes": ["error", "prefer-single"],
@@ -53,10 +63,13 @@
       "LabeledStatement",
       "WithStatement"
     ],
+    "no-shadow": 0,
     "no-underscore-dangle": 0,
-    "no-unused-vars": [2, { "varsIgnorePattern": "^_.+$" }],
+    "no-use-before-define": 0,
+    "no-unused-vars": 0,
     "object-curly-newline": 0,
     "operator-linebreak": 0,
+    "prefer-arrow-callback": 0,
     "react/destructuring-assignment": 0,
     "react/jsx-fragments": ["warn", "element"],
     "react/jsx-filename-extension": [1, { "extensions": [".tsx", ".jsx"] }],
@@ -64,6 +77,7 @@
     "react/jsx-one-expression-per-line": 0,
     "react/jsx-props-no-spreading": 0,
     "react/prefer-stateless-function": 0,
+    "react/require-default-props": 0,
     "react/sort-comp": 0,
     "symbol-description": 0
   }
