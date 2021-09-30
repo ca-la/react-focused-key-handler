@@ -115,8 +115,8 @@ class FocusedKeyHandlerStack {
     const handlerKey = this.getKey(trigger);
     this.stack = this.stack.map((group: HandlerGroup) => {
       if (group.groupId === groupId) {
-        // eslint-disable-next-line no-param-reassign
         const handlersAtKey = group.handlers[handlerKey] || [];
+        // eslint-disable-next-line no-param-reassign
         group.handlers = {
           ...group.handlers,
           [handlerKey]: handlersAtKey.filter(
