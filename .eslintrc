@@ -24,6 +24,7 @@
   },
   "rules": {
     "@typescript-eslint/camelcase": 0,
+    "@typescript-eslint/explicit-module-boundary-types": 0,
     "@typescript-eslint/no-empty-interface": 0,
     "@typescript-eslint/no-explicit-any": 0,
     "@typescript-eslint/no-non-null-assertion": 0,
@@ -68,7 +69,7 @@
     "no-unused-vars": 0,
     "object-curly-newline": 0,
     "operator-linebreak": 0,
-    "prefer-arrow-callback": 1,
+    "prefer-arrow-callback": 0,
     "react/destructuring-assignment": 0,
     "react/jsx-fragments": ["warn", "element"],
     "react/jsx-filename-extension": [1, { "extensions": [".tsx", ".jsx"] }],
