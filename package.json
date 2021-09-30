@@ -49,8 +49,7 @@
   },
   "homepage": "https://github.com/ca-la/react-focused-key-handler#readme",
   "peerDependencies": {
-    "react": "^16.8.5",
-    "lodash": "^4.14.106"
+    "react": "^16.8.5"
   },
   "keywords": [
     "React",
