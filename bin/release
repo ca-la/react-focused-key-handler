@@ -12,12 +12,13 @@ preauth_pgp_signature() {
 
 main() {
   release_type=${1:-other}
+  prerelease_flag=${2:-""}
 
   if [[ $release_type != 'major' ]] &&
     [[ $release_type != 'minor' ]] &&
     [[ $release_type != 'patch' ]]
   then
-    echo 'Usage: release [major|minor|patch]'
+    echo 'Usage: release [major|minor|patch] [--prerelease]'
     exit 1
   fi
 
@@ -41,12 +42,17 @@ main() {
 
   git pull --ff-only origin main
 
-  npm version $release_type
+  if [[ "$prerelease_flag" == "--prerelease" ]]; then
+    git_hash=$(git rev-parse --verify HEAD --short=8)
+    npm version pre${release_type} --preid $git_hash
+    npm publish --tag next
+  else
+    npm version $release_type
+    npm publish
+  fi
 
   git push --tags
   git push origin main
-
-  npm publish
 }
 
 main "$@"
