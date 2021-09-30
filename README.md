@@ -34,8 +34,9 @@ const Interactive = ({
   // ...
   return {
     <Container>
-      // ...
-      <KeyHandlerProvider />
+      <KeyHandlerProvider>
+        {/* Children here */}
+      </KeyHandlerProvider>
     </Container>
   }
 }
@@ -47,17 +48,16 @@ them. This will prevent other groups from executing under it. Then children can 
 ```tsx
 return (
   <App>
-    // At the base of the app
-    <Provider />
-    // At the layer boundry for this group of key handlers
-    <FocusGroup>
-      // In the children of the group add keyhandlers as needed.
-      <KeyHandler
-        eventType={EventType.Keydown}
-        triggers={[{ key: 'Escape' }]}
-        handler={handlerStub}
-      />
-    </FocusGroup>
+    <Provider>
+      // At the layer boundry for this group of key handlers
+      <FocusGroup>
+        // In the children of the group add keyhandlers as needed.
+        <KeyHandler
+          triggers={[{ key: 'Escape' }]}
+          handler={handlerStub}
+        />
+      </FocusGroup>
+    </Provider>
   </App>
 )
 ```
