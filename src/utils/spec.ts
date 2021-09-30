@@ -47,7 +47,7 @@ describe("matchTrigger", () => {
         code: "KeyV",
       });
       Object.defineProperty(event, "target", {
-        get: (): object => {
+        get: () => {
           return {
             isContentEditable: true,
             nodeName: "INPUT",
@@ -62,7 +62,7 @@ describe("matchTrigger", () => {
         code: "KeyV",
       });
       Object.defineProperty(event, "target", {
-        get: (): object => {
+        get: () => {
           return {
             isContentEditable: true,
             nodeName: "DIV",
@@ -85,7 +85,7 @@ describe("matchTrigger", () => {
         code: "Escape",
       });
       Object.defineProperty(event, "target", {
-        get: (): object => {
+        get: () => {
           return {
             isContentEditable: true,
             nodeName: "INPUT",
@@ -100,7 +100,7 @@ describe("matchTrigger", () => {
         code: "Escape",
       }) as any;
       Object.defineProperty(event, "target", {
-        get: (): object => {
+        get: () => {
           return {
             isContentEditable: true,
             nodeName: "DIV",
@@ -115,7 +115,7 @@ describe("matchTrigger", () => {
         code: "KeyV",
       }) as any;
       Object.defineProperty(event, "target", {
-        get: (): object => {
+        get: () => {
           return {
             isContentEditable: true,
             nodeName: "INPUT",
