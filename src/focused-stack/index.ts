@@ -13,7 +13,7 @@ interface HandlerGroup {
   handlers: { [key: string]: HandlerObject[] };
 }
 
-class FocusedKeyHandlerStack {
+export class FocusedStack {
   private keyGenId: number;
   private stack: HandlerGroup[];
 
@@ -52,8 +52,9 @@ class FocusedKeyHandlerStack {
     }
     const key = this.getKeyCodeFromEvent(e);
 
-    const handlerGroup = this.stack[this.stack.length - 1];
+    const handlerGroup = this.stack[0];
     const handlerObjects = handlerGroup.handlers[key];
+
     if (!handlerObjects) {
       return;
     }
@@ -140,7 +141,3 @@ class FocusedKeyHandlerStack {
     }`;
   };
 }
-
-const instance = new FocusedKeyHandlerStack();
-
-export default instance;
