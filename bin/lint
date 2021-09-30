@@ -9,7 +9,7 @@ set -o noglob
 # Usage: bin/lint
 
 main() {
-  files=$({ git diff --diff-filter=d --name-only master; git ls-files --other --modified --exclude-standard; } | grep -E ".[jt]sx?$" || true)
+  files=$({ git diff --diff-filter=d --name-only main; git ls-files --other --modified --exclude-standard; } | grep -E ".[jt]sx?$" || true)
   linter_opts=''
 
   while getopts "af" opt; do

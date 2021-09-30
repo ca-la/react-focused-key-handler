@@ -5,7 +5,7 @@ set -o nounset
 set -o pipefail
 set -o noglob
 
-# Format .ts / .tsx source files that have been updated since master with
+# Format .ts / .tsx source files that have been updated since main with
 # prettier.
 #
 # Usage: bin/format [-al]
@@ -14,7 +14,7 @@ set -o noglob
 #  -l List non-conforming files and exit with non-zero if any exist
 
 main() {
-  files=$(git diff --name-only master | grep -E ".tsx?$" || true)
+  files=$(git diff --name-only main | grep -E ".tsx?$" || true)
   prettier_opts="--write"
 
   while getopts "al" opt; do
