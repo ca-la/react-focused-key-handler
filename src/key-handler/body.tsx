@@ -66,7 +66,11 @@ export default class KeyHandler extends React.Component<OwnProps> {
     const { focusGroupId } = this.context;
     if (focusGroupId !== undefined) {
       this.props.triggers.forEach((trigger: Trigger) =>
-        FocusedHandlerStack.removeAtIdAndTrigger(focusGroupId, trigger)
+        FocusedHandlerStack.removeAtIdAndTrigger(
+          focusGroupId,
+          trigger,
+          this.handleKey
+        )
       );
     } else {
       document.body.removeEventListener(this.eventType, this.handleKey);

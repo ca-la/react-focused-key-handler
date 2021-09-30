@@ -10,6 +10,7 @@ describe("Focused Hanlder Stack", () => {
   });
   it("fires correct event", () => {
     const mockHandler = jest.fn();
+    const anotherHandler = jest.fn();
     const unusedHandler = jest.fn();
     const id1 = FocusedKeyHandlerStack.getGroupId();
     const id2 = FocusedKeyHandlerStack.getGroupId();
@@ -19,10 +20,12 @@ describe("Focused Hanlder Stack", () => {
 
     FocusedKeyHandlerStack.pushGroup(id2);
     FocusedKeyHandlerStack.pushHandler(id2, mockHandler, { key: "Escape" });
+    FocusedKeyHandlerStack.pushHandler(id2, anotherHandler, { key: "Escape" });
 
     FocusedKeyHandlerStack.fireEvent({ code: "Escape" } as any);
 
     expect(mockHandler).toHaveBeenCalled();
+    expect(anotherHandler).toHaveBeenCalled();
     expect(unusedHandler).not.toHaveBeenCalled();
   });
 
@@ -132,6 +135,31 @@ describe("Focused Hanlder Stack", () => {
 
     FocusedKeyHandlerStack.fireEvent({ code: "Escape" } as any);
 
+    expect(unusedHandler).not.toHaveBeenCalled();
+  });
+  it("removes only the removed event from the group", () => {
+    const mockHandler = jest.fn();
+    const anotherHandler = jest.fn();
+    const unusedHandler = jest.fn();
+    const id1 = FocusedKeyHandlerStack.getGroupId();
+    const id2 = FocusedKeyHandlerStack.getGroupId();
+
+    FocusedKeyHandlerStack.pushGroup(id1);
+    FocusedKeyHandlerStack.pushHandler(id1, unusedHandler, { key: "Escape" });
+
+    FocusedKeyHandlerStack.pushGroup(id2);
+    FocusedKeyHandlerStack.pushHandler(id2, mockHandler, { key: "Escape" });
+    FocusedKeyHandlerStack.pushHandler(id2, anotherHandler, { key: "Escape" });
+    FocusedKeyHandlerStack.removeAtIdAndTrigger(
+      id2,
+      { key: "Escape" },
+      anotherHandler
+    );
+
+    FocusedKeyHandlerStack.fireEvent({ code: "Escape" } as any);
+
+    expect(mockHandler).toHaveBeenCalled();
+    expect(anotherHandler).not.toHaveBeenCalled();
     expect(unusedHandler).not.toHaveBeenCalled();
   });
 });
