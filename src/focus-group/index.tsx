@@ -34,6 +34,7 @@ export function FocusGroup(props: OwnProps) {
 
       return () => {
         focusedStack.removeGroup(focusGroupId);
+        setGroupPushed(false);
       };
     },
     [focusGroupId, focusedStack]
