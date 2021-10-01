@@ -52,7 +52,7 @@ export class FocusedStack {
     }
     const key = this.getKeyCodeFromEvent(e);
 
-    const handlerGroup = this.stack[0];
+    const handlerGroup = this.stack[this.stack.length - 1];
     const handlerObjects = handlerGroup.handlers[key];
 
     if (!handlerObjects) {
