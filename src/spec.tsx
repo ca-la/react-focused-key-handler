@@ -12,61 +12,56 @@ function TestComponent() {
   });
   return (
     <div>
-      <Provider>
-        <div>
+      <div>
+        <span>Parent: {clickCounts.parent}</span>
+        <span>Child: {clickCounts.child}</span>
+        <span>Sibling: {clickCounts.sibling}</span>
+        <span>Unused: {clickCounts.unused}</span>
+      </div>
+      <FocusGroup>
+        <KeyHandler
+          triggers={[{ key: "KeyA" }]}
+          handler={() =>
+            setClickCounts((prev) => ({
+              ...prev,
+              parent: prev.parent + 1,
+            }))
+          }
+        />
+        {clickCounts.parent > 0 && clickCounts.child === 0 && (
           <div>
-            <span>Parent: {clickCounts.parent}</span>
-            <span>Child: {clickCounts.child}</span>
-            <span>Sibling: {clickCounts.sibling}</span>
-            <span>Unused: {clickCounts.unused}</span>
+            <FocusGroup>
+              <KeyHandler
+                triggers={[{ key: "KeyA" }]}
+                handler={() =>
+                  setClickCounts((prev) => ({
+                    ...prev,
+                    child: prev.child + 1,
+                  }))
+                }
+              />
+              <KeyHandler
+                triggers={[{ key: "KeyA" }]}
+                handler={() =>
+                  setClickCounts((prev) => ({
+                    ...prev,
+                    sibling: prev.sibling + 1,
+                  }))
+                }
+              />
+              <KeyHandler
+                triggers={[{ key: "KeyV" }]}
+                handler={() =>
+                  setClickCounts((prev) => ({
+                    ...prev,
+                    unused: prev.unused + 1,
+                  }))
+                }
+              />
+            </FocusGroup>
           </div>
-          <FocusGroup>
-            <KeyHandler
-              triggers={[{ key: "KeyA" }]}
-              handler={() =>
-                setClickCounts((prev) => ({
-                  ...prev,
-                  parent: prev.parent + 1,
-                }))
-              }
-            />
-            {clickCounts.parent > 0 && (
-              <div>
-                <span>Showing!</span>
-                <FocusGroup>
-                  <KeyHandler
-                    triggers={[{ key: "KeyA" }]}
-                    handler={() =>
-                      setClickCounts((prev) => ({
-                        ...prev,
-                        child: prev.child + 1,
-                      }))
-                    }
-                  />
-                  <KeyHandler
-                    triggers={[{ key: "KeyA" }]}
-                    handler={() =>
-                      setClickCounts((prev) => ({
-                        ...prev,
-                        sibling: prev.sibling + 1,
-                      }))
-                    }
-                  />
-                  <KeyHandler
-                    triggers={[{ key: "KeyV" }]}
-                    handler={() =>
-                      setClickCounts((prev) => ({
-                        ...prev,
-                        unused: prev.unused + 1,
-                      }))
-                    }
-                  />
-                </FocusGroup>
-              </div>
-            )}
-          </FocusGroup>
-        </div>
-      </Provider>
+        )}
+      </FocusGroup>
     </div>
   );
 }
@@ -75,7 +70,11 @@ describe("<KeyHandler />", () => {
   afterEach(cleanup);
 
   test("matching key is triggered", () => {
-    const component = render(<TestComponent />);
+    const component = render(
+      <Provider>
+        <TestComponent />
+      </Provider>
+    );
 
     fireEvent.keyDown(document.body, { code: "KeyA" });
     expect(component.queryByText("Parent: 1")).toBeTruthy();
@@ -85,6 +84,12 @@ describe("<KeyHandler />", () => {
 
     fireEvent.keyDown(document.body, { code: "KeyA" });
     expect(component.queryByText("Parent: 1")).toBeTruthy();
+    expect(component.queryByText("Child: 1")).toBeTruthy();
+    expect(component.queryByText("Sibling: 1")).toBeTruthy();
+    expect(component.queryByText("Unused: 0")).toBeTruthy();
+
+    fireEvent.keyDown(document.body, { code: "KeyA" });
+    expect(component.queryByText("Parent: 2")).toBeTruthy();
     expect(component.queryByText("Child: 1")).toBeTruthy();
     expect(component.queryByText("Sibling: 1")).toBeTruthy();
     expect(component.queryByText("Unused: 0")).toBeTruthy();
