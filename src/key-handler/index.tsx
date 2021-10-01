@@ -48,7 +48,9 @@ export function KeyHandler(props: KeyHandlerProps) {
   useLayoutEffect(
     function handlerLifecycle() {
       if (focusGroupId === null) {
-        return;
+        return () => {
+          /* consistent return type */
+        };
       }
 
       triggers.forEach((trigger: Trigger) =>
