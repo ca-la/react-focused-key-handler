@@ -52,7 +52,25 @@ export class FocusedStack {
     }
     const key = this.getKeyCodeFromEvent(e);
 
-    const handlerGroup = this.stack[0];
+    const handlerGroup = this.stack.reduce(
+      (acc: HandlerGroup | null, group: HandlerGroup): HandlerGroup | null => {
+        if (acc === null) {
+          return group;
+        }
+
+        if (group.groupId > acc.groupId) {
+          return group;
+        }
+
+        return acc;
+      },
+      null
+    );
+
+    if (!handlerGroup) {
+      return;
+    }
+
     const handlerObjects = handlerGroup.handlers[key];
 
     if (!handlerObjects) {
@@ -77,6 +95,14 @@ export class FocusedStack {
   };
 
   public pushGroup = (groupId: number): void => {
+    const exists = this.stack.find(
+      (group: HandlerGroup) => group.groupId === groupId
+    );
+
+    if (exists) {
+      return;
+    }
+
     this.stack.push({
       groupId,
       handlers: {},

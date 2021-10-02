@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useLayoutEffect } from "react";
 
 import { useFocusGroupId } from "../focus-group";
 import { useFocusedStack } from "../focused-stack/context";
@@ -45,24 +45,22 @@ export function KeyHandler(props: KeyHandlerProps) {
   const focusGroupId = useFocusGroupId();
   const focusedStack = useFocusedStack();
 
-  useEffect(
+  useLayoutEffect(
     function handlerLifecycle() {
-      if (focusGroupId !== null) {
-        triggers.forEach((trigger: Trigger) =>
-          focusedStack.pushHandler(focusGroupId, handleKey, trigger)
-        );
-      } else {
-        document.body.addEventListener("keydown", handleKey);
+      if (focusGroupId === null) {
+        return () => {
+          /* consistent return type */
+        };
       }
 
+      triggers.forEach((trigger: Trigger) =>
+        focusedStack.pushHandler(focusGroupId, handleKey, trigger)
+      );
+
       return () => {
-        if (focusGroupId !== null) {
-          triggers.forEach((trigger: Trigger) =>
-            focusedStack.removeAtIdAndTrigger(focusGroupId, trigger, handleKey)
-          );
-        } else {
-          document.body.removeEventListener("keydown", handleKey);
-        }
+        triggers.forEach((trigger: Trigger) =>
+          focusedStack.removeAtIdAndTrigger(focusGroupId, trigger, handleKey)
+        );
       };
     },
     [focusedStack, focusGroupId, handler, triggers, handleKey]

@@ -3,6 +3,7 @@ import React, {
   useContext,
   useLayoutEffect,
   useMemo,
+  useState,
   ReactNode,
 } from "react";
 import { useFocusedStack } from "../focused-stack/context";
@@ -22,15 +23,18 @@ interface OwnProps {
 export function FocusGroup(props: OwnProps) {
   const focusedStack = useFocusedStack();
   const focusGroupId = useMemo(() => focusedStack.getGroupId(), [focusedStack]);
+  const [groupPushed, setGroupPushed] = useState<boolean>(false);
 
   // Layout effect fires before rendering children to ensure that groups are
   // pushed before handlers are added
   useLayoutEffect(
     function groupLifecycle() {
       focusedStack.pushGroup(focusGroupId);
+      setGroupPushed(true);
 
       return () => {
         focusedStack.removeGroup(focusGroupId);
+        setGroupPushed(false);
       };
     },
     [focusGroupId, focusedStack]
@@ -38,7 +42,7 @@ export function FocusGroup(props: OwnProps) {
 
   return (
     <FocusContext.Provider value={{ focusGroupId }}>
-      {props.children}
+      {groupPushed && props.children}
     </FocusContext.Provider>
   );
 }

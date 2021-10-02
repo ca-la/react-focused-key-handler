@@ -21,13 +21,12 @@ describe("Focused Hanlder Stack", () => {
     const id1 = FocusedKeyHandlerStack.getGroupId();
     const id2 = FocusedKeyHandlerStack.getGroupId();
 
-    // useEffect fires "bottom-up", so deeper groups are added first
+    FocusedKeyHandlerStack.pushGroup(id1);
+    FocusedKeyHandlerStack.pushHandler(id1, unusedHandler, { key: "Escape" });
+
     FocusedKeyHandlerStack.pushGroup(id2);
     FocusedKeyHandlerStack.pushHandler(id2, mockHandler, { key: "Escape" });
     FocusedKeyHandlerStack.pushHandler(id2, anotherHandler, { key: "Escape" });
-
-    FocusedKeyHandlerStack.pushGroup(id1);
-    FocusedKeyHandlerStack.pushHandler(id1, unusedHandler, { key: "Escape" });
 
     FocusedKeyHandlerStack.fireEvent({ code: "Escape" } as any);
 
@@ -66,12 +65,11 @@ describe("Focused Hanlder Stack", () => {
     const id1 = FocusedKeyHandlerStack.getGroupId();
     const id2 = FocusedKeyHandlerStack.getGroupId();
 
-    FocusedKeyHandlerStack.pushGroup(id2);
-    FocusedKeyHandlerStack.pushHandler(id2, group2Handler, { key: "Escape" });
-
     FocusedKeyHandlerStack.pushGroup(id1);
     FocusedKeyHandlerStack.pushHandler(id1, group1Handler, { key: "Escape" });
 
+    FocusedKeyHandlerStack.pushGroup(id2);
+    FocusedKeyHandlerStack.pushHandler(id2, group2Handler, { key: "Escape" });
     FocusedKeyHandlerStack.removeGroup(id2);
 
     FocusedKeyHandlerStack.fireEvent({ code: "Escape" } as any);
@@ -84,11 +82,10 @@ describe("Focused Hanlder Stack", () => {
     const id1 = FocusedKeyHandlerStack.getGroupId();
     const id2 = FocusedKeyHandlerStack.getGroupId();
 
-    FocusedKeyHandlerStack.pushGroup(id2);
-    FocusedKeyHandlerStack.pushHandler(id2, group2Handler, { key: "Escape" });
-
     FocusedKeyHandlerStack.pushGroup(id1);
 
+    FocusedKeyHandlerStack.pushGroup(id2);
+    FocusedKeyHandlerStack.pushHandler(id2, group2Handler, { key: "Escape" });
     FocusedKeyHandlerStack.removeGroup(id2);
 
     FocusedKeyHandlerStack.fireEvent({ code: "Escape" } as any);
@@ -135,10 +132,10 @@ describe("Focused Hanlder Stack", () => {
     const id1 = FocusedKeyHandlerStack.getGroupId();
     const id2 = FocusedKeyHandlerStack.getGroupId();
 
-    FocusedKeyHandlerStack.pushGroup(id2);
-
     FocusedKeyHandlerStack.pushGroup(id1);
     FocusedKeyHandlerStack.pushHandler(id1, unusedHandler, { key: "Escape" });
+
+    FocusedKeyHandlerStack.pushGroup(id2);
 
     FocusedKeyHandlerStack.fireEvent({ code: "Escape" } as any);
 
@@ -151,12 +148,12 @@ describe("Focused Hanlder Stack", () => {
     const id1 = FocusedKeyHandlerStack.getGroupId();
     const id2 = FocusedKeyHandlerStack.getGroupId();
 
+    FocusedKeyHandlerStack.pushGroup(id1);
+    FocusedKeyHandlerStack.pushHandler(id1, unusedHandler, { key: "Escape" });
+
     FocusedKeyHandlerStack.pushGroup(id2);
     FocusedKeyHandlerStack.pushHandler(id2, mockHandler, { key: "Escape" });
     FocusedKeyHandlerStack.pushHandler(id2, anotherHandler, { key: "Escape" });
-
-    FocusedKeyHandlerStack.pushGroup(id1);
-    FocusedKeyHandlerStack.pushHandler(id1, unusedHandler, { key: "Escape" });
 
     FocusedKeyHandlerStack.removeAtIdAndTrigger(
       id2,
