@@ -14,11 +14,20 @@ main() {
   release_type=${1:-other}
   prerelease_flag=${2:-""}
 
+  if [[ $release_type == 'release' ]] &&
+    [[ $prerelease_flag != '--prerelease' ]]
+  then
+    echo 'You must specify --prerelease in order to use the "release" version'
+    exit 1
+  fi
+
+
   if [[ $release_type != 'major' ]] &&
     [[ $release_type != 'minor' ]] &&
-    [[ $release_type != 'patch' ]]
+    [[ $release_type != 'patch' ]] &&
+    [[ $release_type != 'release' ]]
   then
-    echo 'Usage: release [major|minor|patch] [--prerelease]'
+    echo 'Usage: release [major|minor|patch|release] [--prerelease]'
     exit 1
   fi
 
