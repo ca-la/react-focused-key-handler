@@ -12,13 +12,11 @@ preauth_pgp_signature() {
 
 main() {
   release_type=${1:-other}
-  prerelease_flag=${2:-""}
+  tag=${2:-"latest"}
 
-  if [[ $release_type != 'major' ]] &&
-    [[ $release_type != 'minor' ]] &&
-    [[ $release_type != 'patch' ]]
-  then
-    echo 'Usage: release [major|minor|patch] [--prerelease]'
+  if [[ $release_type == other ]] ; then
+    echo 'Usage: bin/release [semver] [npm tag (default "latest")]'
+    echo 'See: https://docs.npmjs.com/cli/v6/commands/npm-version'
     exit 1
   fi
 
@@ -37,19 +35,13 @@ main() {
     exit 1
   fi
 
-  bin/test
   preauth_pgp_signature
 
   git pull --ff-only origin main
 
-  if [[ "$prerelease_flag" == "--prerelease" ]]; then
-    git_hash=$(git rev-parse --verify HEAD --short=8)
-    npm version pre${release_type} --preid $git_hash
-    npm publish --tag next
-  else
-    npm version $release_type
-    npm publish
-  fi
+  # Add a preid of "rc" for the varirous prerelease version
+  npm version ${release_type} --preid rc
+  npm publish --tag $tag
 
   git push --tags
   git push origin main

@@ -4,11 +4,9 @@ A key-handler that uses react context to create key handlers focused around a co
 
 ## Status
 
-| Branch   | URL                                              | Build Status                                                                                                                                |
-| -------- | ------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| Branch | URL                                                           | Build Status                                                                                                                                                      |
+| ------ | ------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `main` | https://www.npmjs.com/package/@cala/react-focused-key-handler | [![Actions Status](https://github.com/ca-la/react-focused-key-handler/workflows/Node%20CI/badge.svg)](https://github.com/ca-la/react-focused-key-handler/actions) |
-
-
 
 ## Installation
 
@@ -52,22 +50,25 @@ return (
       // At the layer boundry for this group of key handlers
       <FocusGroup>
         // In the children of the group add keyhandlers as needed.
-        <KeyHandler
-          triggers={[{ key: 'Escape' }]}
-          handler={handlerStub}
-        />
+        <KeyHandler triggers={[{ key: "Escape" }]} handler={handlerStub} />
       </FocusGroup>
     </Provider>
   </App>
-)
+);
 ```
 
-## Contributing
+## Releasing
 
-To tag off and release a new version to npm, run the release script:
+We use a script that ensures we release from the `main` branch, and performs the correct `npm version` and `npm publish` steps. Here is an example:
 
-```
-$ ./bin/release patch    # 0.0.x - bug fixes
-$ ./bin/release minor    # 0.x.0 - new features or changes
-$ ./bin/release major    # x.0.0 - large, backwards-incompatible changes
+```shell
+# Assuming the current version is: 1.0.0
+
+# bumps major and creates a release candidate, publishing it to the `next` npm tag
+# new version: 2.0.0-rc.0
+bin/release premajor next
+
+# bumps patch, publishing it to the `latest` npm tag
+# new version: 1.0.1
+bin/release patch
 ```
