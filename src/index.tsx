@@ -7,4 +7,4 @@ export {
 
 export { FocusGroup } from "./focus-group";
 
-export { Provider } from "./focused-stack/context";
+export { Provider } from "./provider";
