@@ -1,6 +1,6 @@
 {
   "name": "@cala/react-focused-key-handler",
-  "version": "1.0.0-072c7710.0",
+  "version": "1.0.0-rc.0",
   "description": "A key-handler that uses react context to create key handlers focused around a component.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
