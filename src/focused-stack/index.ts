@@ -78,7 +78,9 @@ export class FocusedStack {
     }
     const target = e.target as HTMLElement | null;
     const isContentEditable = target
-      ? target.nodeName === "INPUT" || target.isContentEditable
+      ? target.nodeName === "INPUT" ||
+        target.nodeName === "TEXTAREA" ||
+        target.isContentEditable
       : false;
 
     for (const handlerObject of handlerObjects) {

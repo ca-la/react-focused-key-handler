@@ -3,7 +3,7 @@ import { Modifier } from "../key-handler";
 
 let FocusedKeyHandlerStack: FocusedStack;
 
-describe("Focused Hanlder Stack", () => {
+describe("Focused Handler Stack", () => {
   beforeEach(() => {
     FocusedKeyHandlerStack = new FocusedStack();
   });
@@ -123,6 +123,14 @@ describe("Focused Hanlder Stack", () => {
     FocusedKeyHandlerStack.fireEvent({
       code: "Escape",
       target: { nodeName: "INPUT", isContentEditable: false },
+    } as any);
+    FocusedKeyHandlerStack.fireEvent({
+      code: "Escape",
+      target: { nodeName: "TEXTAREA", isContentEditable: false },
+    } as any);
+    FocusedKeyHandlerStack.fireEvent({
+      code: "Escape",
+      target: { nodeName: "svg", isContentEditable: true },
     } as any);
 
     expect(mockHandler).not.toHaveBeenCalled();
