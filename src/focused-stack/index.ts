@@ -16,10 +16,14 @@ interface HandlerGroup {
 export class FocusedStack {
   private keyGenId: number;
   private stack: HandlerGroup[];
+  private toRemoveFromStack: number[];
+  private clock: number| null;  //the returned timerID value from setTimeout() is a positive integer 
 
   constructor() {
     this.keyGenId = 0;
     this.stack = [];
+    this.toRemoveFromStack =[];
+	  this.clock = null;
   }
 
   public getGroupId = (): number => {
@@ -88,7 +92,6 @@ export class FocusedStack {
         isContentEditable && handlerObject.shouldTriggerInInputs;
 
       if (
-        handlerObject &&
         (!isContentEditable || isContentEditableAndShouldTrigger)
       ) {
         handlerObject.handler(e);
@@ -110,6 +113,20 @@ export class FocusedStack {
       handlers: {},
     });
   };
+	
+  public pushTearDownStack= (groupId: number): void => {
+    const exists = this.toRemoveFromStack.find(
+      (Id: number) => Id == groupId
+    );
+
+    if (exists) {
+      return;
+    }
+
+    this.toRemoveFromStack.push(
+      groupId
+  );
+  }
 
   public pushHandler = (
     groupId: number,
@@ -168,4 +185,19 @@ export class FocusedStack {
       trigger.modifiers ? trigger.modifiers.sort().join("-") : ""
     }`;
   };
+  private tearDown = (): number[] => {
+	  for (const index of this.toRemoveFromStack){
+		  this.stack.splice(index,1);
+	  }
+
+	  return [];
+  }
+
+  public startClock = () => {
+	  if(this.clock){
+		  clearTimeout(this.clock);
+	  }
+	  this.clock = setTimeout(() => {this.tearDown()}, 2000);
+  }
+
 }

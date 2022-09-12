@@ -18,9 +18,11 @@ export const FocusContext = createContext<FocusContextValue>({
 
 interface OwnProps {
   children?: ReactNode;
+  isPartOfMelody?: boolean;
 }
 
 export function FocusGroup(props: OwnProps) {
+  const {isPartOfMelody} = props;
   const focusedStack = useFocusedStack();
   const focusGroupId = useMemo(() => focusedStack.getGroupId(), [focusedStack]);
   const [groupPushed, setGroupPushed] = useState<boolean>(false);
@@ -31,6 +33,11 @@ export function FocusGroup(props: OwnProps) {
     function groupLifecycle() {
       focusedStack.pushGroup(focusGroupId);
       setGroupPushed(true);
+	    if (isPartOfMelody){
+		    focusedStack.pushTearDownStack(focusGroupId)
+	    }
+
+
 
       return () => {
         focusedStack.removeGroup(focusGroupId);

@@ -1,6 +1,6 @@
-import { useLayoutEffect } from "react";
+import React, { useLayoutEffect } from "react";
 
-import { useFocusGroupId } from "../focus-group";
+import { useFocusGroupId, FocusGroup } from "../focus-group";
 import { useFocusedStack } from "../focused-stack/context";
 import { matchTrigger } from "../utils";
 
@@ -21,27 +21,13 @@ type KeyboardEventHandler = (event: KeyboardEvent) => void;
 
 export interface KeyHandlerProps {
   triggers: Trigger[];
-  handler: KeyboardEventHandler;
-}
-
-function createMatchingKeyHandler(
-  triggers: Trigger[],
-  handler: KeyboardEventHandler
-): KeyboardEventHandler {
-  return (event: KeyboardEvent): void => {
-    if (triggers.length === 0) {
-      return;
-    }
-
-    if (triggers.some(matchTrigger.bind(null, event))) {
-      handler(event);
-    }
-  };
+  handler?: KeyboardEventHandler;
+  children? : React.node;
 }
 
 export function KeyHandler(props: KeyHandlerProps) {
-  const { handler, triggers } = props;
-  const handleKey = createMatchingKeyHandler(triggers, handler);
+  const { triggers } = props;
+  let handler: KeyboardEventHandler  ;
   const focusGroupId = useFocusGroupId();
   const focusedStack = useFocusedStack();
 
@@ -52,18 +38,29 @@ export function KeyHandler(props: KeyHandlerProps) {
           /* consistent return type */
         };
       }
+	    if (props.handler){
+		    handler = props.handler;
+	    }
+	    else{
+		    //focusedStack.pushHandler(focusGroupId, () =>{}, triggers)
+		    handler = () =>{
+			    focusedStack.startClock();
 
-      triggers.forEach((trigger: Trigger) =>
-        focusedStack.pushHandler(focusGroupId, handleKey, trigger)
-      );
+			    return(
+				<FocusGroup isPartOfMelody={true}>
+					{props.children}
+				</FocusGroup>
+			    );
+		    }
+	    }
 
       return () => {
         triggers.forEach((trigger: Trigger) =>
-          focusedStack.removeAtIdAndTrigger(focusGroupId, trigger, handleKey)
+          focusedStack.removeAtIdAndTrigger(focusGroupId, trigger, handler)
         );
       };
     },
-    [focusedStack, focusGroupId, handler, triggers, handleKey]
+    [focusedStack, focusGroupId]
   );
 
   return null;
