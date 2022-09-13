@@ -30,6 +30,7 @@ export function KeyHandler(props: KeyHandlerProps) {
   let handler: KeyboardEventHandler  ;
   const focusGroupId = useFocusGroupId();
   const focusedStack = useFocusedStack();
+  const [shouldRenderChildren, setShouldRenderChildren] = useState(false);
 
   useLayoutEffect(
     function handlerLifecycle() {
@@ -39,19 +40,16 @@ export function KeyHandler(props: KeyHandlerProps) {
         };
       }
 	    if (props.handler){
-		    handler = props.handler;
-	    }
-	    else{
-		    //focusedStack.pushHandler(focusGroupId, () =>{}, triggers)
-		    handler = () =>{
+		    handler = () => {
+          props.handler();
+          focusedStack.tearDown();
+        };
+	    } else {
+		    handler = () => {
 			    focusedStack.startClock();
-
-			    return(
-				<FocusGroup isPartOfMelody={true}>
-					{props.children}
-				</FocusGroup>
-			    );
-		    }
+          setShouldRenderChildren(true);
+          focusedStack.registerTeardown(() => setShouldRenderChildren(false));
+		    };
 	    }
 
       return () => {
@@ -63,5 +61,5 @@ export function KeyHandler(props: KeyHandlerProps) {
     [focusedStack, focusGroupId]
   );
 
-  return null;
+  return shouldRenderChildren && <FocusGroup>{props.children}</FocusGroup>;
 }

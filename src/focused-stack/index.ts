@@ -16,13 +16,13 @@ interface HandlerGroup {
 export class FocusedStack {
   private keyGenId: number;
   private stack: HandlerGroup[];
-  private toRemoveFromStack: number[];
+  private tearDownHandler: () => void | null;
   private clock: number| null;  //the returned timerID value from setTimeout() is a positive integer 
 
   constructor() {
     this.keyGenId = 0;
     this.stack = [];
-    this.toRemoveFromStack =[];
+    this.tearDownHandler = null;
 	  this.clock = null;
   }
 
@@ -114,18 +114,10 @@ export class FocusedStack {
     });
   };
 	
-  public pushTearDownStack= (groupId: number): void => {
-    const exists = this.toRemoveFromStack.find(
-      (Id: number) => Id == groupId
-    );
-
-    if (exists) {
-      return;
+  public registerTeardown = (callback: () => void): void => {
+    if (tearDownHandler === null) {
+      this.tearDownHandler = callback;
     }
-
-    this.toRemoveFromStack.push(
-      groupId
-  );
   }
 
   public pushHandler = (
@@ -185,12 +177,10 @@ export class FocusedStack {
       trigger.modifiers ? trigger.modifiers.sort().join("-") : ""
     }`;
   };
-  private tearDown = (): number[] => {
-	  for (const index of this.toRemoveFromStack){
-		  this.stack.splice(index,1);
-	  }
 
-	  return [];
+  private tearDown = (): number[] => {
+	  this.tearDownHandler?.();
+    this.tearDownHandler = null;
   }
 
   public startClock = () => {
