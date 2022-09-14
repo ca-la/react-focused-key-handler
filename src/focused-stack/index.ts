@@ -16,7 +16,7 @@ interface HandlerGroup {
 export class FocusedStack {
   private keyGenId: number;
   private stack: HandlerGroup[];
-  private tearDownHandler: () => void | null;
+  private tearDownHandler: (() => void )| null;
   private clock: number| null;  //the returned timerID value from setTimeout() is a positive integer 
 
   constructor() {
@@ -115,7 +115,7 @@ export class FocusedStack {
   };
 	
   public registerTeardown = (callback: () => void): void => {
-    if (tearDownHandler === null) {
+    if (this.tearDownHandler === null) {
       this.tearDownHandler = callback;
     }
   }
@@ -178,16 +178,16 @@ export class FocusedStack {
     }`;
   };
 
-  private tearDown = (): number[] => {
+  public tearDown = (): void  => {
 	  this.tearDownHandler?.();
-    this.tearDownHandler = null;
+	  this.tearDownHandler = null;
   }
 
   public startClock = () => {
 	  if(this.clock){
 		  clearTimeout(this.clock);
 	  }
-	  this.clock = setTimeout(() => {this.tearDown()}, 2000);
+	  this.clock = window.setTimeout(() => {this.tearDown()}, 2000);
   }
 
 }

@@ -1,8 +1,7 @@
-import React, { useLayoutEffect } from "react";
+import React, { ReactNode, useState, useLayoutEffect } from "react";
 
 import { useFocusGroupId, FocusGroup } from "../focus-group";
 import { useFocusedStack } from "../focused-stack/context";
-import { matchTrigger } from "../utils";
 
 export enum Modifier {
   Meta = "Meta",
@@ -22,12 +21,11 @@ type KeyboardEventHandler = (event: KeyboardEvent) => void;
 export interface KeyHandlerProps {
   triggers: Trigger[];
   handler?: KeyboardEventHandler;
-  children? : React.node;
+  children? : ReactNode;
 }
 
 export function KeyHandler(props: KeyHandlerProps) {
-  const { triggers } = props;
-  let handler: KeyboardEventHandler  ;
+  const { triggers, handler } = props;
   const focusGroupId = useFocusGroupId();
   const focusedStack = useFocusedStack();
   const [shouldRenderChildren, setShouldRenderChildren] = useState(false);
@@ -39,27 +37,35 @@ export function KeyHandler(props: KeyHandlerProps) {
           /* consistent return type */
         };
       }
-	    if (props.handler){
-		    handler = () => {
-          props.handler();
+		    const wrappedHandler = (e: KeyboardEvent) => {
+			    if (handler){
+          handler(e);
           focusedStack.tearDown();
-        };
-	    } else {
-		    handler = () => {
+			    }
+			    else{
 			    focusedStack.startClock();
           setShouldRenderChildren(true);
           focusedStack.registerTeardown(() => setShouldRenderChildren(false));
-		    };
+		    }
 	    }
+	    triggers.forEach((trigger: Trigger) =>
+	    focusedStack.pushHandler(focusGroupId,wrappedHandler, trigger)
+	    );
 
       return () => {
         triggers.forEach((trigger: Trigger) =>
-          focusedStack.removeAtIdAndTrigger(focusGroupId, trigger, handler)
+          focusedStack.removeAtIdAndTrigger(focusGroupId, trigger, wrappedHandler)
         );
       };
     },
-    [focusedStack, focusGroupId]
+    [focusedStack, focusGroupId, handler,triggers]
   );
 
-  return shouldRenderChildren && <FocusGroup>{props.children}</FocusGroup>;
+   if(shouldRenderChildren){
+	   return <FocusGroup>{props.children}</FocusGroup>;
+	}
+	else{
+		return null;
+	}
+
 }
