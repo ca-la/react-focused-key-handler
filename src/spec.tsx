@@ -28,6 +28,23 @@ function TestComponent() {
             }))
           }
         />
+              <KeyHandler
+                triggers={[{ key: "KeyC" }]}
+              >
+              <KeyHandler
+                triggers={[{ key: "KeyK" }]}
+              >
+              <KeyHandler
+                triggers={[{ key: "KeyV" }]}
+                handler={() =>
+                  setClickCounts((prev) => ({
+                    ...prev,
+                    unused: prev.unused + 1,
+                  }))
+                }
+              />
+      </KeyHandler>
+      </KeyHandler>
         {clickCounts.parent > 0 && clickCounts.child === 0 && (
           <div>
             <FocusGroup>
@@ -58,6 +75,8 @@ function TestComponent() {
                   }))
                 }
               />
+
+
             </FocusGroup>
           </div>
         )}
@@ -93,5 +112,18 @@ describe("<KeyHandler />", () => {
     expect(component.queryByText("Child: 1")).toBeTruthy();
     expect(component.queryByText("Sibling: 1")).toBeTruthy();
     expect(component.queryByText("Unused: 0")).toBeTruthy();
+  });
+
+  test("matching melodies are triggered", () => {
+    const component = render(
+      <Provider>
+        <TestComponent />
+      </Provider>
+    );
+    fireEvent.keyDown(document.body, { code: "KeyC" });
+    fireEvent.keyDown(document.body, { code: "KeyK" });
+    fireEvent.keyDown(document.body, { code: "KeyV" });
+     component.debug();
+    expect(component.queryByText("Unused: 1")).toBeTruthy();
   });
 });
