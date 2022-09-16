@@ -4,11 +4,12 @@ import { FocusGroup } from "./focus-group";
 
 interface OwnProps {
   children: React.ReactNode;
+  timeOut?: number; // Number of miliseconds to wait before timing our a melody
 }
 
-export function Provider({ children }: OwnProps) {
+export function Provider({ children, timeOut = 2000 }: OwnProps) {
   return (
-    <KeyHandlerProvider>
+    <KeyHandlerProvider timeOut={timeOut}>
       <FocusGroup>{children}</FocusGroup>
     </KeyHandlerProvider>
   );

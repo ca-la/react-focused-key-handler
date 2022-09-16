@@ -10,10 +10,11 @@ const StackContext = createContext<FocusedStack | null>(null);
 
 interface OwnProps {
   children: ReactNode;
+  timeOut: number; // Number of miliseconds to wait before timing our a melody
 }
 
-export function Provider({ children }: OwnProps) {
-  const focusedStack = new FocusedStack();
+export function Provider({ children, timeOut }: OwnProps) {
+  const focusedStack = new FocusedStack(timeOut);
 
   useLayoutEffect(
     function attachListenerToBody() {

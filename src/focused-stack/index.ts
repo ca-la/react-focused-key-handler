@@ -17,10 +17,12 @@ export class FocusedStack {
   private keyGenId: number;
   private stack: HandlerGroup[];
   private tearDownHandler: (() => void) | null;
+  private timeOut: number;
   private clock: number | null; // the returned timerID value from setTimeout() is a positive integer
 
-  constructor() {
+  constructor(timeOut: number) {
     this.keyGenId = 0;
+    this.timeOut = timeOut;
     this.stack = [];
     this.tearDownHandler = null;
     this.clock = null;
@@ -187,6 +189,6 @@ export class FocusedStack {
     }
     this.clock = window.setTimeout(() => {
       this.tearDown();
-    }, 2000);
+    }, this.timeOut);
   };
 }

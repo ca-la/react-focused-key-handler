@@ -5,7 +5,7 @@ let FocusedKeyHandlerStack: FocusedStack;
 
 describe("Focused Handler Stack", () => {
   beforeEach(() => {
-    FocusedKeyHandlerStack = new FocusedStack();
+    FocusedKeyHandlerStack = new FocusedStack(2000);
   });
 
   it("generates a new key ", () => {

@@ -173,4 +173,16 @@ describe("<KeyHandler />", () => {
     expect(component.queryByText("level1: 1")).toBeTruthy();
     expect(component.queryByText("level2: 1")).toBeTruthy();
   });
+  test("Custom Timeout functions correctly", async () => {
+    const component = render(
+      <Provider timeOut={3000}>
+        <MelodyTestComponent />
+      </Provider>
+    );
+    fireEvent.keyDown(document.body, { code: "KeyA" });
+    jest.advanceTimersByTime(2001);
+    fireEvent.keyDown(document.body, { code: "KeyB" });
+    fireEvent.keyDown(document.body, { code: "KeyC" });
+    expect(component.queryByText("level2: 1")).toBeTruthy();
+  });
 });
