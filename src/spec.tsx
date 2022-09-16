@@ -84,8 +84,63 @@ function TestComponent() {
     </div>
   );
 }
+function MelodyTestComponent() {
+  const [clickCounts, setClickCounts] = useState<Record<string, number>>({
+    level1: 0,
+    level2: 0,
+  });
+  return (
+    <div>
+      <div>
+        <span>level1: {clickCounts.level1}</span>
+        <span>level2: {clickCounts.level2}</span>
+      </div>
+      <FocusGroup>
+              <KeyHandler
+                triggers={[{ key: "KeyA" }]}
+                
+              >
+              <KeyHandler
+                triggers={[{ key: "KeyB" }]}
+                
+              >
+              <KeyHandler
+                triggers={[{ key: "KeyC" }]}
+                handler={() =>
+                  setClickCounts((prev) => ({
+                    ...prev,
+                    level2: prev.level2 + 1,
+                  }))
+                }
+              />
+
+	      </KeyHandler>
+              <KeyHandler
+                triggers={[{ key: "KeyD" }]}
+                handler={() =>
+                  setClickCounts((prev) => ({
+                    ...prev,
+                    level1: prev.level1 + 1,
+                  }))
+                }
+              />
+	      </KeyHandler>
+
+      </FocusGroup>
+      </div>
+      )
+}
+
 
 describe("<KeyHandler />", () => {
+	beforeAll(() => {
+        jest.useFakeTimers()
+    })
+
+    afterAll(() => {
+        jest.useRealTimers()
+    })
+
   afterEach(cleanup);
 
   test("matching key is triggered", () => {
@@ -114,16 +169,23 @@ describe("<KeyHandler />", () => {
     expect(component.queryByText("Unused: 0")).toBeTruthy();
   });
 
-  test("matching melodies are triggered", () => {
+  test("matching melodies are triggered", async () => {
     const component = render(
       <Provider>
-        <TestComponent />
+        <MelodyTestComponent />
       </Provider>
     );
+    fireEvent.keyDown(document.body, { code: "KeyA" });
+    fireEvent.keyDown(document.body, { code: "KeyB" });
     fireEvent.keyDown(document.body, { code: "KeyC" });
-    fireEvent.keyDown(document.body, { code: "KeyK" });
-    fireEvent.keyDown(document.body, { code: "KeyV" });
+    fireEvent.keyDown(document.body, { code: "KeyA" });
+    fireEvent.keyDown(document.body, { code: "KeyD" });
+    fireEvent.keyDown(document.body, { code: "KeyA" });
+	  jest.advanceTimersByTime(2001)
+    fireEvent.keyDown(document.body, { code: "KeyB" });
+    fireEvent.keyDown(document.body, { code: "KeyC" });
      component.debug();
-    expect(component.queryByText("Unused: 1")).toBeTruthy();
+    expect(component.queryByText("level1: 1")).toBeTruthy();
+    expect(component.queryByText("level2: 1")).toBeTruthy();
   });
 });
