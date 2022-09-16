@@ -28,23 +28,19 @@ function TestComponent() {
             }))
           }
         />
-              <KeyHandler
-                triggers={[{ key: "KeyC" }]}
-              >
-              <KeyHandler
-                triggers={[{ key: "KeyK" }]}
-              >
-              <KeyHandler
-                triggers={[{ key: "KeyV" }]}
-                handler={() =>
-                  setClickCounts((prev) => ({
-                    ...prev,
-                    unused: prev.unused + 1,
-                  }))
-                }
-              />
-      </KeyHandler>
-      </KeyHandler>
+        <KeyHandler triggers={[{ key: "KeyC" }]}>
+          <KeyHandler triggers={[{ key: "KeyK" }]}>
+            <KeyHandler
+              triggers={[{ key: "KeyV" }]}
+              handler={() =>
+                setClickCounts((prev) => ({
+                  ...prev,
+                  unused: prev.unused + 1,
+                }))
+              }
+            />
+          </KeyHandler>
+        </KeyHandler>
         {clickCounts.parent > 0 && clickCounts.child === 0 && (
           <div>
             <FocusGroup>
@@ -75,8 +71,6 @@ function TestComponent() {
                   }))
                 }
               />
-
-
             </FocusGroup>
           </div>
         )}
@@ -96,50 +90,41 @@ function MelodyTestComponent() {
         <span>level2: {clickCounts.level2}</span>
       </div>
       <FocusGroup>
-              <KeyHandler
-                triggers={[{ key: "KeyA" }]}
-                
-              >
-              <KeyHandler
-                triggers={[{ key: "KeyB" }]}
-                
-              >
-              <KeyHandler
-                triggers={[{ key: "KeyC" }]}
-                handler={() =>
-                  setClickCounts((prev) => ({
-                    ...prev,
-                    level2: prev.level2 + 1,
-                  }))
-                }
-              />
-
-	      </KeyHandler>
-              <KeyHandler
-                triggers={[{ key: "KeyD" }]}
-                handler={() =>
-                  setClickCounts((prev) => ({
-                    ...prev,
-                    level1: prev.level1 + 1,
-                  }))
-                }
-              />
-	      </KeyHandler>
-
+        <KeyHandler triggers={[{ key: "KeyA" }]}>
+          <KeyHandler triggers={[{ key: "KeyB" }]}>
+            <KeyHandler
+              triggers={[{ key: "KeyC" }]}
+              handler={() =>
+                setClickCounts((prev) => ({
+                  ...prev,
+                  level2: prev.level2 + 1,
+                }))
+              }
+            />
+          </KeyHandler>
+          <KeyHandler
+            triggers={[{ key: "KeyD" }]}
+            handler={() =>
+              setClickCounts((prev) => ({
+                ...prev,
+                level1: prev.level1 + 1,
+              }))
+            }
+          />
+        </KeyHandler>
       </FocusGroup>
-      </div>
-      )
+    </div>
+  );
 }
 
-
 describe("<KeyHandler />", () => {
-	beforeAll(() => {
-        jest.useFakeTimers()
-    })
+  beforeAll(() => {
+    jest.useFakeTimers();
+  });
 
-    afterAll(() => {
-        jest.useRealTimers()
-    })
+  afterAll(() => {
+    jest.useRealTimers();
+  });
 
   afterEach(cleanup);
 
@@ -181,10 +166,10 @@ describe("<KeyHandler />", () => {
     fireEvent.keyDown(document.body, { code: "KeyA" });
     fireEvent.keyDown(document.body, { code: "KeyD" });
     fireEvent.keyDown(document.body, { code: "KeyA" });
-	  jest.advanceTimersByTime(2001)
+    jest.advanceTimersByTime(2001);
     fireEvent.keyDown(document.body, { code: "KeyB" });
     fireEvent.keyDown(document.body, { code: "KeyC" });
-     component.debug();
+    component.debug();
     expect(component.queryByText("level1: 1")).toBeTruthy();
     expect(component.queryByText("level2: 1")).toBeTruthy();
   });

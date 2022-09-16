@@ -21,7 +21,7 @@ type KeyboardEventHandler = (event: KeyboardEvent) => void;
 export interface KeyHandlerProps {
   triggers: Trigger[];
   handler?: KeyboardEventHandler;
-  children? : ReactNode;
+  children?: ReactNode;
 }
 
 export function KeyHandler(props: KeyHandlerProps) {
@@ -37,35 +37,35 @@ export function KeyHandler(props: KeyHandlerProps) {
           /* consistent return type */
         };
       }
-		    const wrappedHandler = (e: KeyboardEvent) => {
-			    if (handler){
+      const wrappedHandler = (e: KeyboardEvent) => {
+        if (handler) {
           handler(e);
           focusedStack.tearDown();
-			    }
-			    else{
-			    focusedStack.startClock();
+        } else {
+          focusedStack.startClock();
           setShouldRenderChildren(true);
           focusedStack.registerTeardown(() => setShouldRenderChildren(false));
-		    }
-	    }
-	    triggers.forEach((trigger: Trigger) =>
-	    focusedStack.pushHandler(focusGroupId,wrappedHandler, trigger)
-	    );
+        }
+      };
+      triggers.forEach((trigger: Trigger) =>
+        focusedStack.pushHandler(focusGroupId, wrappedHandler, trigger)
+      );
 
       return () => {
         triggers.forEach((trigger: Trigger) =>
-          focusedStack.removeAtIdAndTrigger(focusGroupId, trigger, wrappedHandler)
+          focusedStack.removeAtIdAndTrigger(
+            focusGroupId,
+            trigger,
+            wrappedHandler
+          )
         );
       };
     },
-    [focusedStack, focusGroupId, handler,triggers]
+    [focusedStack, focusGroupId, handler, triggers]
   );
 
-   if(shouldRenderChildren){
-	   return <FocusGroup>{props.children}</FocusGroup>;
-	}
-	else{
-		return null;
-	}
-
+  if (shouldRenderChildren) {
+    return <FocusGroup>{props.children}</FocusGroup>;
+  }
+  return null;
 }

@@ -18,7 +18,6 @@ export function Provider({ children }: OwnProps) {
   useLayoutEffect(
     function attachListenerToBody() {
       const handler = (event: KeyboardEvent) => {
-	
         focusedStack.fireEvent(event);
       };
 
