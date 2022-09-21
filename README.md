@@ -47,7 +47,7 @@ them. This will prevent other groups from executing under it. Then children can 
 return (
   <App>
     <Provider>
-      // At the layer boundry for this group of key handlers
+      // At the layer boundary for this group of key handlers
       <FocusGroup>
         // In the children of the group add keyhandlers as needed.
         <KeyHandler triggers={[{ key: "Escape" }]} handler={handlerStub} />
@@ -57,6 +57,40 @@ return (
 );
 ```
 
+React-Focused-Key-Handler also supports Key-Melodies! Key-Melodies are multi-key combinations such as ```dd``` or ```dw``` (which will be familliar commands to any vim users out there). Key-Melodies are implemented by extending `<KeyHandler>` to allow nesting them. So if we wanted to implement a `gg` key-melody for scrolling to the top of the page (again in a vim-esque fashion) we would do so like:
+
+```tsx
+return (
+  <App>
+  //We can set the timeout in miliseconds for the time to wait till the next key in the melody is pressed before resetting 
+    <Provider timeOut = 3000>
+      <FocusGroup>
+        <KeyHandler triggers={[{ key: "KeyG" }]}>
+            <KeyHandler triggers={[{ key : "KeyG" }]} handler = {scrollToTopofPage()}/>
+            //We can add/nest as many more keys we want forming an ifinite amount of melodies
+            <KeyHandler.....>
+              <KeyHandler...../>
+              .
+              .
+              .
+              <KeyHandler...../>
+            </KeyHandler>
+            <KeyHandler...../>
+            <KeyHandler...../>
+            .
+            .
+            .
+            <KeyHandler...../>
+        </KeyHandler>
+      </FocusGroup>
+    </Provider>
+  </App>
+);
+```
+
+##API Limitations
+
+As of now the API does not provide the ability to have a melody share it root note with any other melody's root note or singular `<KeyHandler/>`'s trigger. While the API will permit you to do this it will cause unknown behaviour in your programme. If you find the need to have such an API in your project feel free to extend our API and submit a PR!
 ## Releasing
 
 We use a script that ensures we release from the `main` branch, and performs the correct `npm version` and `npm publish` steps. Here is an example:
