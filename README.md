@@ -88,7 +88,7 @@ return (
 );
 ```
 
-##API Limitations
+## API Limitations
 
 As of now the API does not provide the ability to have a melody share it root note with any other melody's root note or singular `<KeyHandler/>`'s trigger. While the API will permit you to do this it will cause unknown behaviour in your programme. If you find the need to have such an API in your project feel free to extend our API and submit a PR!
 ## Releasing
