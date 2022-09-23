@@ -13,13 +13,24 @@ interface HandlerGroup {
   handlers: { [key: string]: HandlerObject[] };
 }
 
+export interface FocusedStackOptions {
+  timeout: number;
+}
+
 export class FocusedStack {
   private keyGenId: number;
   private stack: HandlerGroup[];
+  private teardownHandler: (() => void) | null;
+  private timeout: number;
+  private clock: number | null; // the returned timerID value from setTimeout() is a positive integer
 
-  constructor() {
+  constructor(options: Partial<FocusedStackOptions> = {}) {
+    const { timeout = 2000 } = options;
     this.keyGenId = 0;
+    this.timeout = timeout;
     this.stack = [];
+    this.teardownHandler = null;
+    this.clock = null;
   }
 
   public getGroupId = (): number => {
@@ -87,10 +98,7 @@ export class FocusedStack {
       const isContentEditableAndShouldTrigger =
         isContentEditable && handlerObject.shouldTriggerInInputs;
 
-      if (
-        handlerObject &&
-        (!isContentEditable || isContentEditableAndShouldTrigger)
-      ) {
+      if (!isContentEditable || isContentEditableAndShouldTrigger) {
         handlerObject.handler(e);
       }
     }
@@ -109,6 +117,12 @@ export class FocusedStack {
       groupId,
       handlers: {},
     });
+  };
+
+  public registerTeardown = (callback: () => void): void => {
+    if (this.teardownHandler === null) {
+      this.teardownHandler = callback;
+    }
   };
 
   public pushHandler = (
@@ -167,5 +181,19 @@ export class FocusedStack {
     return `${trigger.key}${
       trigger.modifiers ? trigger.modifiers.sort().join("-") : ""
     }`;
+  };
+
+  public tearDown = (): void => {
+    this.teardownHandler?.();
+    this.teardownHandler = null;
+  };
+
+  public startClock = () => {
+    if (this.clock) {
+      clearTimeout(this.clock);
+    }
+    this.clock = window.setTimeout(() => {
+      this.tearDown();
+    }, this.timeout);
   };
 }

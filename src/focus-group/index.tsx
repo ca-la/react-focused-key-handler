@@ -31,7 +31,6 @@ export function FocusGroup(props: OwnProps) {
     function groupLifecycle() {
       focusedStack.pushGroup(focusGroupId);
       setGroupPushed(true);
-
       return () => {
         focusedStack.removeGroup(focusGroupId);
         setGroupPushed(false);

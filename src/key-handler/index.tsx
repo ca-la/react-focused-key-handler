@@ -1,8 +1,7 @@
-import { useLayoutEffect } from "react";
+import React, { ReactNode, useState, useLayoutEffect } from "react";
 
-import { useFocusGroupId } from "../focus-group";
+import { useFocusGroupId, FocusGroup } from "../focus-group";
 import { useFocusedStack } from "../focused-stack/context";
-import { matchTrigger } from "../utils";
 
 export enum Modifier {
   Meta = "Meta",
@@ -19,31 +18,23 @@ export interface Trigger {
 
 type KeyboardEventHandler = (event: KeyboardEvent) => void;
 
-export interface KeyHandlerProps {
-  triggers: Trigger[];
+interface LeafProp {
   handler: KeyboardEventHandler;
 }
 
-function createMatchingKeyHandler(
-  triggers: Trigger[],
-  handler: KeyboardEventHandler
-): KeyboardEventHandler {
-  return (event: KeyboardEvent): void => {
-    if (triggers.length === 0) {
-      return;
-    }
-
-    if (triggers.some(matchTrigger.bind(null, event))) {
-      handler(event);
-    }
-  };
+interface NodeProp {
+  children: ReactNode;
 }
 
+export type KeyHandlerProps = { triggers: Trigger[] } & (LeafProp | NodeProp);
+
 export function KeyHandler(props: KeyHandlerProps) {
-  const { handler, triggers } = props;
-  const handleKey = createMatchingKeyHandler(triggers, handler);
+  const { triggers, ...rest } = props;
   const focusGroupId = useFocusGroupId();
   const focusedStack = useFocusedStack();
+  const [shouldRenderChildren, setShouldRenderChildren] = useState(false);
+  const handler = "handler" in rest ? rest.handler : null;
+  const children = "children" in rest ? rest.children : null;
 
   useLayoutEffect(
     function handlerLifecycle() {
@@ -52,19 +43,35 @@ export function KeyHandler(props: KeyHandlerProps) {
           /* consistent return type */
         };
       }
-
+      const wrappedHandler = (e: KeyboardEvent) => {
+        if (handler) {
+          handler(e);
+          focusedStack.tearDown();
+        } else {
+          focusedStack.startClock();
+          setShouldRenderChildren(true);
+          focusedStack.registerTeardown(() => setShouldRenderChildren(false));
+        }
+      };
       triggers.forEach((trigger: Trigger) =>
-        focusedStack.pushHandler(focusGroupId, handleKey, trigger)
+        focusedStack.pushHandler(focusGroupId, wrappedHandler, trigger)
       );
 
       return () => {
         triggers.forEach((trigger: Trigger) =>
-          focusedStack.removeAtIdAndTrigger(focusGroupId, trigger, handleKey)
+          focusedStack.removeAtIdAndTrigger(
+            focusGroupId,
+            trigger,
+            wrappedHandler
+          )
         );
       };
     },
-    [focusedStack, focusGroupId, handler, triggers, handleKey]
+    [focusedStack, focusGroupId, handler, triggers]
   );
 
+  if (shouldRenderChildren) {
+    return <FocusGroup>{children}</FocusGroup>;
+  }
   return null;
 }
