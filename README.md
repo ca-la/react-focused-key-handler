@@ -63,7 +63,7 @@ React-Focused-Key-Handler also supports Key-Melodies! Key-Melodies are multi-key
 return (
   <App>
   //We can set the timeout in miliseconds for the time to wait till the next key in the melody is pressed before resetting 
-    <Provider timeOut = 3000>
+    <Provider timeOut={3000}>
       <FocusGroup>
         <KeyHandler triggers={[{ key: "KeyG" }]}>
             <KeyHandler triggers={[{ key : "KeyG" }]} handler = {scrollToTopofPage()}/>
