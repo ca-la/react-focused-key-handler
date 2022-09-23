@@ -66,7 +66,10 @@ return (
     <Provider timeOut={3000}>
       <FocusGroup>
         <KeyHandler triggers={[{ key: "KeyG" }]}>
-            <KeyHandler triggers={[{ key : "KeyG" }]} handler = {scrollToTopofPage()}/>
+            <KeyHandler
+              triggers={[{ key : "KeyG" }]}
+              handler={scrollToTopofPage()}
+            />
             //We can add/nest as many more keys we want forming an ifinite amount of melodies
             <KeyHandler.....>
               <KeyHandler...../>
