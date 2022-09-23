@@ -169,7 +169,6 @@ describe("<KeyHandler />", () => {
     jest.advanceTimersByTime(2001);
     fireEvent.keyDown(document.body, { code: "KeyB" });
     fireEvent.keyDown(document.body, { code: "KeyC" });
-    component.debug();
     expect(component.queryByText("level1: 1")).toBeTruthy();
     expect(component.queryByText("level2: 1")).toBeTruthy();
   });
