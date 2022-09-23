@@ -4,7 +4,10 @@ import React, {
   useContext,
   ReactNode,
 } from "react";
-import { FocusedStack, FocusedStackOptions as FocusedStackProps } from "./index";
+import {
+  FocusedStack,
+  FocusedStackOptions as FocusedStackProps,
+} from "./index";
 
 const StackContext = createContext<FocusedStack | null>(null);
 
@@ -13,7 +16,7 @@ interface OwnProps {
 }
 
 export function Provider(props: OwnProps & Partial<FocusedStackProps>) {
-  const {children, ...FocusedStackOptions} = props;
+  const { children, ...FocusedStackOptions } = props;
   const focusedStack = new FocusedStack(FocusedStackOptions);
 
   useLayoutEffect(

@@ -18,7 +18,6 @@ export interface Trigger {
 
 type KeyboardEventHandler = (event: KeyboardEvent) => void;
 
-
 interface LeafProp {
   handler: KeyboardEventHandler;
 }
@@ -29,9 +28,8 @@ interface NodeProp {
 
 export type KeyHandlerProps = { triggers: Trigger[] } & (LeafProp | NodeProp);
 
-
 export function KeyHandler(props: KeyHandlerProps) {
-  const { triggers, ...rest} = props;
+  const { triggers, ...rest } = props;
   const focusGroupId = useFocusGroupId();
   const focusedStack = useFocusedStack();
   const [shouldRenderChildren, setShouldRenderChildren] = useState(false);

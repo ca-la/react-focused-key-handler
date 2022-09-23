@@ -17,7 +17,6 @@ export interface FocusedStackOptions {
   timeout: number;
 }
 
-
 export class FocusedStack {
   private keyGenId: number;
   private stack: HandlerGroup[];
@@ -26,7 +25,7 @@ export class FocusedStack {
   private clock: number | null; // the returned timerID value from setTimeout() is a positive integer
 
   constructor(options: Partial<FocusedStackOptions> = {}) {
-    const {timeout = 2000} = options;
+    const { timeout = 2000 } = options;
     this.keyGenId = 0;
     this.timeout = timeout;
     this.stack = [];
