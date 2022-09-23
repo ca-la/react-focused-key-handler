@@ -175,7 +175,7 @@ describe("<KeyHandler />", () => {
   });
   test("Custom Timeout functions correctly", async () => {
     const component = render(
-      <Provider timeOut={3000}>
+      <Provider timeout={3000}>
         <MelodyTestComponent />
       </Provider>
     );

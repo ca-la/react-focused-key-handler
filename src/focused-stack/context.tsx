@@ -12,7 +12,7 @@ interface OwnProps {
   children: ReactNode;
 }
 
-export function Provider(props: OwnProps & FocusedStackProps) {
+export function Provider(props: OwnProps & Partial<FocusedStackProps>) {
   const {children, ...FocusedStackOptions} = props;
   const focusedStack = new FocusedStack(FocusedStackOptions);
 

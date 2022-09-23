@@ -35,6 +35,8 @@ export function KeyHandler(props: KeyHandlerProps) {
   const focusGroupId = useFocusGroupId();
   const focusedStack = useFocusedStack();
   const [shouldRenderChildren, setShouldRenderChildren] = useState(false);
+  const handler = "handler" in rest ? rest.handler : null;
+  const children = "children" in rest ? rest.children : null;
 
   useLayoutEffect(
     function handlerLifecycle() {
@@ -44,8 +46,8 @@ export function KeyHandler(props: KeyHandlerProps) {
         };
       }
       const wrappedHandler = (e: KeyboardEvent) => {
-        if ("handler" in rest) {
-          rest.handler(e);
+        if (handler) {
+          handler(e);
           focusedStack.tearDown();
         } else {
           focusedStack.startClock();
@@ -67,11 +69,11 @@ export function KeyHandler(props: KeyHandlerProps) {
         );
       };
     },
-    [focusedStack, focusGroupId, rest, triggers]
+    [focusedStack, focusGroupId, handler, triggers]
   );
 
-  if (shouldRenderChildren && "children" in rest) {
-    return <FocusGroup>{rest.children}</FocusGroup>;
+  if (shouldRenderChildren) {
+    return <FocusGroup>{children}</FocusGroup>;
   }
   return null;
 }
