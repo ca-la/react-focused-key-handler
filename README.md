@@ -57,7 +57,7 @@ return (
 );
 ```
 
-React-Focused-Key-Handler also supports Key-Melodies! Key-Melodies are multi-key combinations such as ```dd``` or ```dw``` (which will be familliar commands to any vim users out there). Key-Melodies are implemented by extending `<KeyHandler>` to allow nesting them. So if we wanted to implement a `gg` key-melody for scrolling to the top of the page (again in a vim-esque fashion) we would do so like:
+React-Focused-Key-Handler also supports Key-Melodies! Key-Melodies are multi-key combinations such as ```dd``` or ```dw``` (which will be familiar commands to any vim users out there). Key-Melodies are implemented by extending `<KeyHandler>` to allow nesting them. So if we wanted to implement a `gg` key-melody for scrolling to the top of the page (again in a vim-esque fashion) we would do so like:
 
 ```tsx
 return (
