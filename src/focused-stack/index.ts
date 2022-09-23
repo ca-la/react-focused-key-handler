@@ -13,18 +13,24 @@ interface HandlerGroup {
   handlers: { [key: string]: HandlerObject[] };
 }
 
+export interface FocusedStackOptions {
+  timeout: number;
+}
+
+
 export class FocusedStack {
   private keyGenId: number;
   private stack: HandlerGroup[];
-  private tearDownHandler: (() => void) | null;
-  private timeOut: number;
+  private teardownHandler: (() => void) | null;
+  private timeout: number;
   private clock: number | null; // the returned timerID value from setTimeout() is a positive integer
 
-  constructor(timeOut: number) {
+  constructor(options: Partial<FocusedStackOptions> = {}) {
+    const {timeout = 2000} = options;
     this.keyGenId = 0;
-    this.timeOut = timeOut;
+    this.timeout = timeout;
     this.stack = [];
-    this.tearDownHandler = null;
+    this.teardownHandler = null;
     this.clock = null;
   }
 
@@ -115,8 +121,8 @@ export class FocusedStack {
   };
 
   public registerTeardown = (callback: () => void): void => {
-    if (this.tearDownHandler === null) {
-      this.tearDownHandler = callback;
+    if (this.teardownHandler === null) {
+      this.teardownHandler = callback;
     }
   };
 
@@ -179,8 +185,8 @@ export class FocusedStack {
   };
 
   public tearDown = (): void => {
-    this.tearDownHandler?.();
-    this.tearDownHandler = null;
+    this.teardownHandler?.();
+    this.teardownHandler = null;
   };
 
   public startClock = () => {
@@ -189,6 +195,6 @@ export class FocusedStack {
     }
     this.clock = window.setTimeout(() => {
       this.tearDown();
-    }, this.timeOut);
+    }, this.timeout);
   };
 }

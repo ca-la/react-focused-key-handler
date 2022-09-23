@@ -4,17 +4,17 @@ import React, {
   useContext,
   ReactNode,
 } from "react";
-import { FocusedStack } from "./index";
+import { FocusedStack, FocusedStackOptions as FocusedStackProps } from "./index";
 
 const StackContext = createContext<FocusedStack | null>(null);
 
 interface OwnProps {
   children: ReactNode;
-  timeOut: number; // Number of miliseconds to wait before timing our a melody
 }
 
-export function Provider({ children, timeOut }: OwnProps) {
-  const focusedStack = new FocusedStack(timeOut);
+export function Provider(props: OwnProps & FocusedStackProps) {
+  const {children, ...FocusedStackOptions} = props;
+  const focusedStack = new FocusedStack(FocusedStackOptions);
 
   useLayoutEffect(
     function attachListenerToBody() {

@@ -18,14 +18,20 @@ export interface Trigger {
 
 type KeyboardEventHandler = (event: KeyboardEvent) => void;
 
-export interface KeyHandlerProps {
-  triggers: Trigger[];
-  handler?: KeyboardEventHandler;
-  children?: ReactNode;
+
+interface LeafProp {
+  handler: KeyboardEventHandler;
 }
 
+interface NodeProp {
+  children: ReactNode;
+}
+
+export type KeyHandlerProps = { triggers: Trigger[] } & (LeafProp | NodeProp);
+
+
 export function KeyHandler(props: KeyHandlerProps) {
-  const { triggers, handler } = props;
+  const { triggers, ...rest} = props;
   const focusGroupId = useFocusGroupId();
   const focusedStack = useFocusedStack();
   const [shouldRenderChildren, setShouldRenderChildren] = useState(false);
@@ -38,8 +44,8 @@ export function KeyHandler(props: KeyHandlerProps) {
         };
       }
       const wrappedHandler = (e: KeyboardEvent) => {
-        if (handler) {
-          handler(e);
+        if ("handler" in rest) {
+          rest.handler(e);
           focusedStack.tearDown();
         } else {
           focusedStack.startClock();
@@ -61,11 +67,11 @@ export function KeyHandler(props: KeyHandlerProps) {
         );
       };
     },
-    [focusedStack, focusGroupId, handler, triggers]
+    [focusedStack, focusGroupId, rest, triggers]
   );
 
-  if (shouldRenderChildren) {
-    return <FocusGroup>{props.children}</FocusGroup>;
+  if (shouldRenderChildren && "children" in rest) {
+    return <FocusGroup>{rest.children}</FocusGroup>;
   }
   return null;
 }
