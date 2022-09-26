@@ -85,6 +85,7 @@ export class FocusedStack {
     const handlerObjects = handlerGroup.handlers[key];
 
     if (!handlerObjects) {
+      this.tearDown();
       return;
     }
     const target = e.target as HTMLElement | null;
