@@ -165,6 +165,12 @@ describe("<KeyHandler />", () => {
     fireEvent.keyDown(document.body, { code: "KeyC" });
     fireEvent.keyDown(document.body, { code: "KeyA" });
     fireEvent.keyDown(document.body, { code: "KeyD" });
+    //Check to confirm that entering a key that is not a part of the melody in the middle of a melody does nothing
+    fireEvent.keyDown(document.body, { code: "KeyA" });
+    fireEvent.keyDown(document.body, { code: "KeyB" });
+    fireEvent.keyDown(document.body, { code: "KeyT" });
+    fireEvent.keyDown(document.body, { code: "KeyC" });
+    //Check to confirm a key combination that exceeds timeout does not work
     fireEvent.keyDown(document.body, { code: "KeyA" });
     jest.advanceTimersByTime(2001);
     fireEvent.keyDown(document.body, { code: "KeyB" });
