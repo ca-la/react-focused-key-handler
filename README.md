@@ -20,28 +20,27 @@ shortcuts that prevent fallthrough (unless specified)
 
 ## Usage
 
-First around the border of the app add the context provider, we do this as part of our routing
-component
+First, around the border of your application, add the context provider:
 
 ```tsx
-import KeyHandlerProvider from '../components/lib/key-handler/provider';
+import { Provider as KeyHandlerProvider } from '@cala/react-focused-key-handler';
 
-const Interactive = ({
+const MyApp = () = >
   // ...
-}: AllProps): JSX.Element => {
-  // ...
-  return {
-    <Container>
+
+  return (
+    <div>
       <KeyHandlerProvider>
-        {/* Children here */}
+        {//... etc ...}
       </KeyHandlerProvider>
-    </Container>
-  }
+    </div>
+  );
 }
 ```
 
-Next add `<FocusGroup>` components around the component boundries at the level which you need
-them. This will prevent other groups from executing under it. Then children can add `<KeyHandler>` components without worrying about it.
+Next, add `<FocusGroup>` components around the component boundries at the level
+which you need them. This will prevent other groups from executing under it.
+Children of the `FocusGroup` can add `<KeyHandler>` components as needed.
 
 ```tsx
 return (
@@ -57,7 +56,21 @@ return (
 );
 ```
 
-React-Focused-Key-Handler also supports Key-Melodies! Key-Melodies are multi-key combinations such as ```dd``` or ```dw``` (which will be familiar commands to any vim users out there). Key-Melodies are implemented by extending `<KeyHandler>` to allow nesting them. So if we wanted to implement a `gg` key-melody for scrolling to the top of the page (again in a vim-esque fashion) we would do so like:
+`<KeyHandler>` components take one or more `Trigger`s, defined by the schema in
+`./src/key-handler/index.tsx`. In the most simple usage, `key` should be a
+[key code value](https://developer.mozilla.org/en-US/docs/Web/API/UI_Events/Keyboard_event_code_values)
+as defined by `KeyboardEvent.protype.code`, e.g. `KeyA` or `ArrowDown`.
+
+
+
+### Key melodies
+
+React-Focused-Key-Handler also supports Key-Melodies! Key-Melodies are multi-key
+combinations such as `dd` or `dw` (which will be familiar commands to
+any vim users out there). Key-Melodies are implemented by extending
+`<KeyHandler>` to allow nesting them. So if we wanted to implement a `gg`
+key-melody for scrolling to the top of the page (again in a vim-esque fashion)
+we would do so like:
 
 ```tsx
 return (
@@ -70,7 +83,7 @@ return (
               triggers={[{ key : "KeyG" }]}
               handler={scrollToTopofPage()}
             />
-            //We can add/nest as many more keys we want forming an ifinite amount of melodies
+            //We can add/nest as many more keys we want forming an infinite amount of melodies
             <KeyHandler.....>
               <KeyHandler...../>
               .
@@ -93,7 +106,12 @@ return (
 
 ## API Limitations
 
-As of now the API does not provide the ability to have a melody share it root note with any other melody's root note or singular `<KeyHandler/>`'s trigger. While the API will permit you to do this it will cause unknown behaviour in your programme. If you find the need to have such an API in your project feel free to extend our API and submit a PR!
+As of now the API does not provide the ability to have a melody share its root
+note with any other melody's root note or singular `<KeyHandler/>`'s trigger.
+While the API will permit you to do this it will cause unknown behaviour in your
+program. If you find the need to have such an API in your project feel free to
+extend our API and submit a PR!
+
 ## Releasing
 
 We use a script that ensures we release from the `main` branch, and performs the correct `npm version` and `npm publish` steps. Here is an example:
