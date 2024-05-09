@@ -20,6 +20,8 @@ type KeyboardEventHandler = (event: KeyboardEvent) => void;
 
 interface LeafProp {
   handler: KeyboardEventHandler;
+  stopPropagation?: boolean;
+  preventDefault?: boolean;
 }
 
 interface NodeProp {
@@ -35,6 +37,8 @@ export function KeyHandler(props: KeyHandlerProps) {
   const [shouldRenderChildren, setShouldRenderChildren] = useState(false);
   const handler = "handler" in rest ? rest.handler : null;
   const children = "children" in rest ? rest.children : null;
+  const stopPropagation = "stopPropagation" in rest ? rest.stopPropagation : false;
+  const preventDefault = "preventDefault" in rest ? rest.preventDefault : false;
 
   useLayoutEffect(
     function handlerLifecycle() {
@@ -44,6 +48,14 @@ export function KeyHandler(props: KeyHandlerProps) {
         };
       }
       const wrappedHandler = (e: KeyboardEvent) => {
+        if (stopPropagation) {
+          e.stopPropagation();
+        }
+
+        if (preventDefault) {
+          e.preventDefault();
+        }
+
         if (handler) {
           handler(e);
           focusedStack.tearDown();
