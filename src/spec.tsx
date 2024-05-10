@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { render, cleanup, fireEvent } from "@testing-library/react";
+import { act, render, cleanup, fireEvent } from "@testing-library/react";
 
 import { KeyHandler, Provider, FocusGroup } from "./index";
 
@@ -180,6 +180,7 @@ describe("<KeyHandler />", () => {
     fireEvent.keyDown(document.body, { code: "KeyC" });
     expect(component.queryByText("level2: 1")).toBeTruthy();
   });
+
   test("Custom Timeout functions correctly", async () => {
     const component = render(
       <Provider timeout={3000}>
@@ -191,5 +192,64 @@ describe("<KeyHandler />", () => {
     fireEvent.keyDown(document.body, { code: "KeyB" });
     fireEvent.keyDown(document.body, { code: "KeyC" });
     expect(component.queryByText("level2: 1")).toBeTruthy();
+  });
+
+  describe("preventDefault", () => {
+    let callCount = 0;
+
+    const keyboardEvent = {
+      code: "Tab",
+    };
+
+    beforeEach(() => {
+      callCount = 0;
+    });
+
+    test("is not active by default", async () => {
+      render(
+        <Provider>
+          <FocusGroup>
+            <input type='text' className='input' />
+            <input type='text' className='input2' />
+            <KeyHandler
+              triggers={[{ key: "Tab", shouldTriggerInInputs: true }]}
+              handler={() =>
+                callCount++
+              }
+            />
+          </FocusGroup>
+        </Provider>
+      );
+
+      const input = document.querySelector(".input") as HTMLInputElement;
+      input.focus();
+      fireEvent.keyDown(input, keyboardEvent);
+      expect(callCount).toBe(1);
+      expect(input.matches(":focus")).toBe(false);
+    });
+
+    test("is active when props are specified", async () => {
+      render(
+        <Provider>
+          <FocusGroup>
+            <input type='text' className='input' />
+            <input type='text' className='input2' />
+            <KeyHandler
+              triggers={[{ key: "Tab", shouldTriggerInInputs: true }]}
+              handler={() =>
+                callCount++
+              }
+              preventDefault
+            />
+          </FocusGroup>
+        </Provider>
+      );
+
+      const input = document.querySelector(".input") as HTMLInputElement;
+      input.focus();
+      fireEvent.keyDown(input, keyboardEvent);
+      expect(callCount).toBe(1);
+      expect(input.matches(":focus")).toBe(true);
+    });
   });
 });
